@@ -493,7 +493,7 @@
                                   "provider": "CodeStarSourceConnection"
                                 },
                                 "configuration": {
-                                  "ConnectionArn": "arn:aws:codeconnections:us-west-2:009507777973:connection/87891bc9-3204-4896-a1e5-1c0995476d09",
+                                  "ConnectionArn": "arn:aws:codeconnections:us-west-2:009507777973:connection/bdfca5f3-e4eb-4f24-8da6-331be9739e3a",
                                   "FullRepositoryId": "hechmi/aws-data-pipeline-applications",
                                   "BranchName": "main",
                                   "DetectChanges": true
@@ -865,7 +865,7 @@
                                             {
                                               "Action": "codestar-connections:UseConnection",
                                               "Effect": "Allow",
-                                              "Resource": "arn:aws:codeconnections:us-west-2:009507777973:connection/87891bc9-3204-4896-a1e5-1c0995476d09"
+                                              "Resource": "arn:aws:codeconnections:us-west-2:009507777973:connection/bdfca5f3-e4eb-4f24-8da6-331be9739e3a"
                                             },
                                             {
                                               "Action": [

@@ -10,8 +10,8 @@ from aws_glue_applications.glue_app_stage import GlueAppStage
 
 GITHUB_REPO = "hechmi/aws-data-pipeline-applications"
 GITHUB_BRANCH = "main"
-# Will need to create new connection or reuse existing one
-GITHUB_CONNECTION_ARN = "arn:aws:codeconnections:us-west-2:009507777973:connection/87891bc9-3204-4896-a1e5-1c0995476d09"
+# Dedicated connection for application repository
+GITHUB_CONNECTION_ARN = "arn:aws:codeconnections:us-west-2:009507777973:connection/bdfca5f3-e4eb-4f24-8da6-331be9739e3a"
 
 class AppPipelineStack(Stack):
     def __init__(self, scope: Construct, construct_id: str, config: Dict, **kwargs) -> None:
