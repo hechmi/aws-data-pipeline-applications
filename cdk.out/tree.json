@@ -1,0 +1,2486 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "AppPipelineStack": {
+        "id": "AppPipelineStack",
+        "path": "AppPipelineStack",
+        "children": {
+          "GlueAppPipeline": {
+            "id": "GlueAppPipeline",
+            "path": "AppPipelineStack/GlueAppPipeline",
+            "children": {
+              "Pipeline": {
+                "id": "Pipeline",
+                "path": "AppPipelineStack/GlueAppPipeline/Pipeline",
+                "children": {
+                  "ArtifactsBucketEncryptionKey": {
+                    "id": "ArtifactsBucketEncryptionKey",
+                    "path": "AppPipelineStack/GlueAppPipeline/Pipeline/ArtifactsBucketEncryptionKey",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppPipelineStack/GlueAppPipeline/Pipeline/ArtifactsBucketEncryptionKey/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::KMS::Key",
+                          "aws:cdk:cloudformation:props": {
+                            "keyPolicy": {
+                              "Statement": [
+                                {
+                                  "Action": "kms:*",
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "AWS": "arn:aws:iam::009507777973:root"
+                                  },
+                                  "Resource": "*"
+                                },
+                                {
+                                  "Action": [
+                                    "kms:Decrypt",
+                                    "kms:DescribeKey"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "AWS": [
+                                      {
+                                        "Fn::Join": [
+                                          "",
+                                          [
+                                            "arn:",
+                                            {
+                                              "Ref": "AWS::Partition"
+                                            },
+                                            ":iam::095929019002:role/cdk-hnb659fds-deploy-role-095929019002-us-west-2"
+                                          ]
+                                        ]
+                                      },
+                                      {
+                                        "Fn::Join": [
+                                          "",
+                                          [
+                                            "arn:",
+                                            {
+                                              "Ref": "AWS::Partition"
+                                            },
+                                            ":iam::981445861826:role/cdk-hnb659fds-deploy-role-981445861826-us-west-2"
+                                          ]
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  "Resource": "*"
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_kms.CfnKey",
+                          "version": "2.87.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_kms.Key",
+                      "version": "2.87.0"
+                    }
+                  },
+                  "ArtifactsBucketEncryptionKeyAlias": {
+                    "id": "ArtifactsBucketEncryptionKeyAlias",
+                    "path": "AppPipelineStack/GlueAppPipeline/Pipeline/ArtifactsBucketEncryptionKeyAlias",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppPipelineStack/GlueAppPipeline/Pipeline/ArtifactsBucketEncryptionKeyAlias/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::KMS::Alias",
+                          "aws:cdk:cloudformation:props": {
+                            "aliasName": "alias/codepipeline-apppipelinestack-glueapppipeline-0eef9a20",
+                            "targetKeyId": {
+                              "Fn::GetAtt": [
+                                "GlueAppPipelineArtifactsBucketEncryptionKey4573972C",
+                                "Arn"
+                              ]
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_kms.CfnAlias",
+                          "version": "2.87.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_kms.Alias",
+                      "version": "2.87.0"
+                    }
+                  },
+                  "ArtifactsBucket": {
+                    "id": "ArtifactsBucket",
+                    "path": "AppPipelineStack/GlueAppPipeline/Pipeline/ArtifactsBucket",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppPipelineStack/GlueAppPipeline/Pipeline/ArtifactsBucket/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                          "aws:cdk:cloudformation:props": {
+                            "bucketEncryption": {
+                              "serverSideEncryptionConfiguration": [
+                                {
+                                  "serverSideEncryptionByDefault": {
+                                    "sseAlgorithm": "aws:kms",
+                                    "kmsMasterKeyId": {
+                                      "Fn::GetAtt": [
+                                        "GlueAppPipelineArtifactsBucketEncryptionKey4573972C",
+                                        "Arn"
+                                      ]
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            "publicAccessBlockConfiguration": {
+                              "blockPublicAcls": true,
+                              "blockPublicPolicy": true,
+                              "ignorePublicAcls": true,
+                              "restrictPublicBuckets": true
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
+                          "version": "2.87.0"
+                        }
+                      },
+                      "Policy": {
+                        "id": "Policy",
+                        "path": "AppPipelineStack/GlueAppPipeline/Pipeline/ArtifactsBucket/Policy",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "AppPipelineStack/GlueAppPipeline/Pipeline/ArtifactsBucket/Policy/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::S3::BucketPolicy",
+                              "aws:cdk:cloudformation:props": {
+                                "bucket": {
+                                  "Ref": "GlueAppPipelineArtifactsBucket13CABAEB"
+                                },
+                                "policyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": "s3:*",
+                                      "Condition": {
+                                        "Bool": {
+                                          "aws:SecureTransport": "false"
+                                        }
+                                      },
+                                      "Effect": "Deny",
+                                      "Principal": {
+                                        "AWS": "*"
+                                      },
+                                      "Resource": [
+                                        {
+                                          "Fn::GetAtt": [
+                                            "GlueAppPipelineArtifactsBucket13CABAEB",
+                                            "Arn"
+                                          ]
+                                        },
+                                        {
+                                          "Fn::Join": [
+                                            "",
+                                            [
+                                              {
+                                                "Fn::GetAtt": [
+                                                  "GlueAppPipelineArtifactsBucket13CABAEB",
+                                                  "Arn"
+                                                ]
+                                              },
+                                              "/*"
+                                            ]
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "Action": [
+                                        "s3:GetBucket*",
+                                        "s3:GetObject*",
+                                        "s3:List*"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Principal": {
+                                        "AWS": [
+                                          {
+                                            "Fn::Join": [
+                                              "",
+                                              [
+                                                "arn:",
+                                                {
+                                                  "Ref": "AWS::Partition"
+                                                },
+                                                ":iam::095929019002:role/cdk-hnb659fds-deploy-role-095929019002-us-west-2"
+                                              ]
+                                            ]
+                                          },
+                                          {
+                                            "Fn::Join": [
+                                              "",
+                                              [
+                                                "arn:",
+                                                {
+                                                  "Ref": "AWS::Partition"
+                                                },
+                                                ":iam::981445861826:role/cdk-hnb659fds-deploy-role-981445861826-us-west-2"
+                                              ]
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      "Resource": [
+                                        {
+                                          "Fn::GetAtt": [
+                                            "GlueAppPipelineArtifactsBucket13CABAEB",
+                                            "Arn"
+                                          ]
+                                        },
+                                        {
+                                          "Fn::Join": [
+                                            "",
+                                            [
+                                              {
+                                                "Fn::GetAtt": [
+                                                  "GlueAppPipelineArtifactsBucket13CABAEB",
+                                                  "Arn"
+                                                ]
+                                              },
+                                              "/*"
+                                            ]
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
+                              "version": "2.87.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
+                          "version": "2.87.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.Bucket",
+                      "version": "2.87.0"
+                    }
+                  },
+                  "Role": {
+                    "id": "Role",
+                    "path": "AppPipelineStack/GlueAppPipeline/Pipeline/Role",
+                    "children": {
+                      "ImportRole": {
+                        "id": "ImportRole",
+                        "path": "AppPipelineStack/GlueAppPipeline/Pipeline/Role/ImportRole",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.Resource",
+                          "version": "2.87.0"
+                        }
+                      },
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppPipelineStack/GlueAppPipeline/Pipeline/Role/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                          "aws:cdk:cloudformation:props": {
+                            "assumeRolePolicyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "sts:AssumeRole",
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "Service": "codepipeline.amazonaws.com"
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                          "version": "2.87.0"
+                        }
+                      },
+                      "DefaultPolicy": {
+                        "id": "DefaultPolicy",
+                        "path": "AppPipelineStack/GlueAppPipeline/Pipeline/Role/DefaultPolicy",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "AppPipelineStack/GlueAppPipeline/Pipeline/Role/DefaultPolicy/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                              "aws:cdk:cloudformation:props": {
+                                "policyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": [
+                                        "s3:Abort*",
+                                        "s3:DeleteObject*",
+                                        "s3:GetBucket*",
+                                        "s3:GetObject*",
+                                        "s3:List*",
+                                        "s3:PutObject",
+                                        "s3:PutObjectLegalHold",
+                                        "s3:PutObjectRetention",
+                                        "s3:PutObjectTagging",
+                                        "s3:PutObjectVersionTagging"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": [
+                                        {
+                                          "Fn::GetAtt": [
+                                            "GlueAppPipelineArtifactsBucket13CABAEB",
+                                            "Arn"
+                                          ]
+                                        },
+                                        {
+                                          "Fn::Join": [
+                                            "",
+                                            [
+                                              {
+                                                "Fn::GetAtt": [
+                                                  "GlueAppPipelineArtifactsBucket13CABAEB",
+                                                  "Arn"
+                                                ]
+                                              },
+                                              "/*"
+                                            ]
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "Action": [
+                                        "kms:Decrypt",
+                                        "kms:DescribeKey",
+                                        "kms:Encrypt",
+                                        "kms:GenerateDataKey*",
+                                        "kms:ReEncrypt*"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": {
+                                        "Fn::GetAtt": [
+                                          "GlueAppPipelineArtifactsBucketEncryptionKey4573972C",
+                                          "Arn"
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "Action": "sts:AssumeRole",
+                                      "Effect": "Allow",
+                                      "Resource": [
+                                        {
+                                          "Fn::GetAtt": [
+                                            "GlueAppPipelineCodeBuildActionRole78A0C4DA",
+                                            "Arn"
+                                          ]
+                                        },
+                                        {
+                                          "Fn::GetAtt": [
+                                            "GlueAppPipelineProdAppStageApproveProductionAppCodePipelineActionRoleB356DE89",
+                                            "Arn"
+                                          ]
+                                        },
+                                        {
+                                          "Fn::GetAtt": [
+                                            "GlueAppPipelineSourcehechmiawsdatapipelineapplicationsCodePipelineActionRole0FA55F97",
+                                            "Arn"
+                                          ]
+                                        },
+                                        {
+                                          "Fn::Join": [
+                                            "",
+                                            [
+                                              "arn:",
+                                              {
+                                                "Ref": "AWS::Partition"
+                                              },
+                                              ":iam::095929019002:role/cdk-hnb659fds-deploy-role-095929019002-us-west-2"
+                                            ]
+                                          ]
+                                        },
+                                        {
+                                          "Fn::Join": [
+                                            "",
+                                            [
+                                              "arn:",
+                                              {
+                                                "Ref": "AWS::Partition"
+                                              },
+                                              ":iam::981445861826:role/cdk-hnb659fds-deploy-role-981445861826-us-west-2"
+                                            ]
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                },
+                                "policyName": "GlueAppPipelineRoleDefaultPolicy19B308C0",
+                                "roles": [
+                                  {
+                                    "Ref": "GlueAppPipelineRoleC4698E40"
+                                  }
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                              "version": "2.87.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.Policy",
+                          "version": "2.87.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Role",
+                      "version": "2.87.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "AppPipelineStack/GlueAppPipeline/Pipeline/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::CodePipeline::Pipeline",
+                      "aws:cdk:cloudformation:props": {
+                        "roleArn": {
+                          "Fn::GetAtt": [
+                            "GlueAppPipelineRoleC4698E40",
+                            "Arn"
+                          ]
+                        },
+                        "stages": [
+                          {
+                            "name": "Source",
+                            "actions": [
+                              {
+                                "name": "hechmi_aws-data-pipeline-applications",
+                                "outputArtifacts": [
+                                  {
+                                    "name": "hechmi_aws_data_pipeline_applications_Source"
+                                  }
+                                ],
+                                "actionTypeId": {
+                                  "category": "Source",
+                                  "version": "1",
+                                  "owner": "AWS",
+                                  "provider": "CodeStarSourceConnection"
+                                },
+                                "configuration": {
+                                  "ConnectionArn": "arn:aws:codeconnections:us-west-2:009507777973:connection/87891bc9-3204-4896-a1e5-1c0995476d09",
+                                  "FullRepositoryId": "hechmi/aws-data-pipeline-applications",
+                                  "BranchName": "main",
+                                  "DetectChanges": true
+                                },
+                                "runOrder": 1,
+                                "roleArn": {
+                                  "Fn::GetAtt": [
+                                    "GlueAppPipelineSourcehechmiawsdatapipelineapplicationsCodePipelineActionRole0FA55F97",
+                                    "Arn"
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "name": "Build",
+                            "actions": [
+                              {
+                                "name": "CdkSynth",
+                                "inputArtifacts": [
+                                  {
+                                    "name": "hechmi_aws_data_pipeline_applications_Source"
+                                  }
+                                ],
+                                "outputArtifacts": [
+                                  {
+                                    "name": "CdkSynth_Output"
+                                  }
+                                ],
+                                "actionTypeId": {
+                                  "category": "Build",
+                                  "version": "1",
+                                  "owner": "AWS",
+                                  "provider": "CodeBuild"
+                                },
+                                "configuration": {
+                                  "ProjectName": {
+                                    "Ref": "GlueAppPipelineBuildCdkSynthCdkBuildProject3E6F0E77"
+                                  },
+                                  "EnvironmentVariables": "[{\"name\":\"_PROJECT_CONFIG_HASH\",\"type\":\"PLAINTEXT\",\"value\":\"a2a15fb8662318f3323dd0fd4346dad867c53a4eac9e62db0ac3b05e8e1c5e8e\"}]"
+                                },
+                                "runOrder": 1,
+                                "roleArn": {
+                                  "Fn::GetAtt": [
+                                    "GlueAppPipelineCodeBuildActionRole78A0C4DA",
+                                    "Arn"
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "name": "UpdatePipeline",
+                            "actions": [
+                              {
+                                "name": "SelfMutate",
+                                "inputArtifacts": [
+                                  {
+                                    "name": "CdkSynth_Output"
+                                  }
+                                ],
+                                "actionTypeId": {
+                                  "category": "Build",
+                                  "version": "1",
+                                  "owner": "AWS",
+                                  "provider": "CodeBuild"
+                                },
+                                "configuration": {
+                                  "ProjectName": {
+                                    "Ref": "GlueAppPipelineUpdatePipelineSelfMutationD4848EE0"
+                                  },
+                                  "EnvironmentVariables": "[{\"name\":\"_PROJECT_CONFIG_HASH\",\"type\":\"PLAINTEXT\",\"value\":\"5597c04be4d60daefa23efa249cc42f0a57215037922dcf6b92d9988baa859a9\"}]"
+                                },
+                                "runOrder": 1,
+                                "roleArn": {
+                                  "Fn::GetAtt": [
+                                    "GlueAppPipelineCodeBuildActionRole78A0C4DA",
+                                    "Arn"
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "name": "Assets",
+                            "actions": [
+                              {
+                                "name": "FileAsset1",
+                                "inputArtifacts": [
+                                  {
+                                    "name": "CdkSynth_Output"
+                                  }
+                                ],
+                                "actionTypeId": {
+                                  "category": "Build",
+                                  "version": "1",
+                                  "owner": "AWS",
+                                  "provider": "CodeBuild"
+                                },
+                                "configuration": {
+                                  "ProjectName": {
+                                    "Ref": "GlueAppPipelineAssetsFileAsset13EFA5B58"
+                                  }
+                                },
+                                "runOrder": 1,
+                                "roleArn": {
+                                  "Fn::GetAtt": [
+                                    "GlueAppPipelineCodeBuildActionRole78A0C4DA",
+                                    "Arn"
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "name": "DevAppStage",
+                            "actions": [
+                              {
+                                "name": "Prepare",
+                                "inputArtifacts": [
+                                  {
+                                    "name": "CdkSynth_Output"
+                                  }
+                                ],
+                                "actionTypeId": {
+                                  "category": "Deploy",
+                                  "version": "1",
+                                  "owner": "AWS",
+                                  "provider": "CloudFormation"
+                                },
+                                "configuration": {
+                                  "StackName": "DevAppStage-GlueAppStack",
+                                  "Capabilities": "CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND",
+                                  "RoleArn": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:",
+                                        {
+                                          "Ref": "AWS::Partition"
+                                        },
+                                        ":iam::095929019002:role/cdk-hnb659fds-cfn-exec-role-095929019002-us-west-2"
+                                      ]
+                                    ]
+                                  },
+                                  "ActionMode": "CHANGE_SET_REPLACE",
+                                  "ChangeSetName": "PipelineChange",
+                                  "TemplatePath": "CdkSynth_Output::assembly-AppPipelineStack-DevAppStage/AppPipelineStackDevAppStageGlueAppStackD17DEC16.template.json"
+                                },
+                                "runOrder": 1,
+                                "roleArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":iam::095929019002:role/cdk-hnb659fds-deploy-role-095929019002-us-west-2"
+                                    ]
+                                  ]
+                                }
+                              },
+                              {
+                                "name": "Deploy",
+                                "actionTypeId": {
+                                  "category": "Deploy",
+                                  "version": "1",
+                                  "owner": "AWS",
+                                  "provider": "CloudFormation"
+                                },
+                                "configuration": {
+                                  "StackName": "DevAppStage-GlueAppStack",
+                                  "ActionMode": "CHANGE_SET_EXECUTE",
+                                  "ChangeSetName": "PipelineChange"
+                                },
+                                "runOrder": 2,
+                                "roleArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":iam::095929019002:role/cdk-hnb659fds-deploy-role-095929019002-us-west-2"
+                                    ]
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "name": "ProdAppStage",
+                            "actions": [
+                              {
+                                "name": "ApproveProductionApp",
+                                "actionTypeId": {
+                                  "category": "Approval",
+                                  "version": "1",
+                                  "owner": "AWS",
+                                  "provider": "Manual"
+                                },
+                                "runOrder": 1,
+                                "roleArn": {
+                                  "Fn::GetAtt": [
+                                    "GlueAppPipelineProdAppStageApproveProductionAppCodePipelineActionRoleB356DE89",
+                                    "Arn"
+                                  ]
+                                }
+                              },
+                              {
+                                "name": "GlueAppStack.Prepare",
+                                "inputArtifacts": [
+                                  {
+                                    "name": "CdkSynth_Output"
+                                  }
+                                ],
+                                "actionTypeId": {
+                                  "category": "Deploy",
+                                  "version": "1",
+                                  "owner": "AWS",
+                                  "provider": "CloudFormation"
+                                },
+                                "configuration": {
+                                  "StackName": "ProdAppStage-GlueAppStack",
+                                  "Capabilities": "CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND",
+                                  "RoleArn": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:",
+                                        {
+                                          "Ref": "AWS::Partition"
+                                        },
+                                        ":iam::981445861826:role/cdk-hnb659fds-cfn-exec-role-981445861826-us-west-2"
+                                      ]
+                                    ]
+                                  },
+                                  "ActionMode": "CHANGE_SET_REPLACE",
+                                  "ChangeSetName": "PipelineChange",
+                                  "TemplatePath": "CdkSynth_Output::assembly-AppPipelineStack-ProdAppStage/AppPipelineStackProdAppStageGlueAppStack90981941.template.json"
+                                },
+                                "runOrder": 2,
+                                "roleArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":iam::981445861826:role/cdk-hnb659fds-deploy-role-981445861826-us-west-2"
+                                    ]
+                                  ]
+                                }
+                              },
+                              {
+                                "name": "GlueAppStack.Deploy",
+                                "actionTypeId": {
+                                  "category": "Deploy",
+                                  "version": "1",
+                                  "owner": "AWS",
+                                  "provider": "CloudFormation"
+                                },
+                                "configuration": {
+                                  "StackName": "ProdAppStage-GlueAppStack",
+                                  "ActionMode": "CHANGE_SET_EXECUTE",
+                                  "ChangeSetName": "PipelineChange"
+                                },
+                                "runOrder": 3,
+                                "roleArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:",
+                                      {
+                                        "Ref": "AWS::Partition"
+                                      },
+                                      ":iam::981445861826:role/cdk-hnb659fds-deploy-role-981445861826-us-west-2"
+                                    ]
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        ],
+                        "artifactStore": {
+                          "type": "S3",
+                          "location": {
+                            "Ref": "GlueAppPipelineArtifactsBucket13CABAEB"
+                          },
+                          "encryptionKey": {
+                            "type": "KMS",
+                            "id": {
+                              "Fn::GetAtt": [
+                                "GlueAppPipelineArtifactsBucketEncryptionKey4573972C",
+                                "Arn"
+                              ]
+                            }
+                          }
+                        },
+                        "name": "GlueAppPipeline",
+                        "restartExecutionOnUpdate": true
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_codepipeline.CfnPipeline",
+                      "version": "2.87.0"
+                    }
+                  },
+                  "Source": {
+                    "id": "Source",
+                    "path": "AppPipelineStack/GlueAppPipeline/Pipeline/Source",
+                    "children": {
+                      "hechmi_aws-data-pipeline-applications": {
+                        "id": "hechmi_aws-data-pipeline-applications",
+                        "path": "AppPipelineStack/GlueAppPipeline/Pipeline/Source/hechmi_aws-data-pipeline-applications",
+                        "children": {
+                          "CodePipelineActionRole": {
+                            "id": "CodePipelineActionRole",
+                            "path": "AppPipelineStack/GlueAppPipeline/Pipeline/Source/hechmi_aws-data-pipeline-applications/CodePipelineActionRole",
+                            "children": {
+                              "ImportCodePipelineActionRole": {
+                                "id": "ImportCodePipelineActionRole",
+                                "path": "AppPipelineStack/GlueAppPipeline/Pipeline/Source/hechmi_aws-data-pipeline-applications/CodePipelineActionRole/ImportCodePipelineActionRole",
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.Resource",
+                                  "version": "2.87.0"
+                                }
+                              },
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "AppPipelineStack/GlueAppPipeline/Pipeline/Source/hechmi_aws-data-pipeline-applications/CodePipelineActionRole/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                                  "aws:cdk:cloudformation:props": {
+                                    "assumeRolePolicyDocument": {
+                                      "Statement": [
+                                        {
+                                          "Action": "sts:AssumeRole",
+                                          "Effect": "Allow",
+                                          "Principal": {
+                                            "AWS": "arn:aws:iam::009507777973:root"
+                                          }
+                                        }
+                                      ],
+                                      "Version": "2012-10-17"
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                                  "version": "2.87.0"
+                                }
+                              },
+                              "DefaultPolicy": {
+                                "id": "DefaultPolicy",
+                                "path": "AppPipelineStack/GlueAppPipeline/Pipeline/Source/hechmi_aws-data-pipeline-applications/CodePipelineActionRole/DefaultPolicy",
+                                "children": {
+                                  "Resource": {
+                                    "id": "Resource",
+                                    "path": "AppPipelineStack/GlueAppPipeline/Pipeline/Source/hechmi_aws-data-pipeline-applications/CodePipelineActionRole/DefaultPolicy/Resource",
+                                    "attributes": {
+                                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                                      "aws:cdk:cloudformation:props": {
+                                        "policyDocument": {
+                                          "Statement": [
+                                            {
+                                              "Action": "codestar-connections:UseConnection",
+                                              "Effect": "Allow",
+                                              "Resource": "arn:aws:codeconnections:us-west-2:009507777973:connection/87891bc9-3204-4896-a1e5-1c0995476d09"
+                                            },
+                                            {
+                                              "Action": [
+                                                "s3:Abort*",
+                                                "s3:DeleteObject*",
+                                                "s3:GetBucket*",
+                                                "s3:GetObject*",
+                                                "s3:List*",
+                                                "s3:PutObject",
+                                                "s3:PutObjectLegalHold",
+                                                "s3:PutObjectRetention",
+                                                "s3:PutObjectTagging",
+                                                "s3:PutObjectVersionTagging"
+                                              ],
+                                              "Effect": "Allow",
+                                              "Resource": [
+                                                {
+                                                  "Fn::GetAtt": [
+                                                    "GlueAppPipelineArtifactsBucket13CABAEB",
+                                                    "Arn"
+                                                  ]
+                                                },
+                                                {
+                                                  "Fn::Join": [
+                                                    "",
+                                                    [
+                                                      {
+                                                        "Fn::GetAtt": [
+                                                          "GlueAppPipelineArtifactsBucket13CABAEB",
+                                                          "Arn"
+                                                        ]
+                                                      },
+                                                      "/*"
+                                                    ]
+                                                  ]
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "Action": [
+                                                "kms:Decrypt",
+                                                "kms:DescribeKey",
+                                                "kms:Encrypt",
+                                                "kms:GenerateDataKey*",
+                                                "kms:ReEncrypt*"
+                                              ],
+                                              "Effect": "Allow",
+                                              "Resource": {
+                                                "Fn::GetAtt": [
+                                                  "GlueAppPipelineArtifactsBucketEncryptionKey4573972C",
+                                                  "Arn"
+                                                ]
+                                              }
+                                            },
+                                            {
+                                              "Action": [
+                                                "s3:PutObjectAcl",
+                                                "s3:PutObjectVersionAcl"
+                                              ],
+                                              "Effect": "Allow",
+                                              "Resource": {
+                                                "Fn::Join": [
+                                                  "",
+                                                  [
+                                                    {
+                                                      "Fn::GetAtt": [
+                                                        "GlueAppPipelineArtifactsBucket13CABAEB",
+                                                        "Arn"
+                                                      ]
+                                                    },
+                                                    "/*"
+                                                  ]
+                                                ]
+                                              }
+                                            }
+                                          ],
+                                          "Version": "2012-10-17"
+                                        },
+                                        "policyName": "GlueAppPipelineSourcehechmiawsdatapipelineapplicationsCodePipelineActionRoleDefaultPolicy67B8AB3A",
+                                        "roles": [
+                                          {
+                                            "Ref": "GlueAppPipelineSourcehechmiawsdatapipelineapplicationsCodePipelineActionRole0FA55F97"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "constructInfo": {
+                                      "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                                      "version": "2.87.0"
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_iam.Policy",
+                                  "version": "2.87.0"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.Role",
+                              "version": "2.87.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "constructs.Construct",
+                          "version": "10.4.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "constructs.Construct",
+                      "version": "10.4.2"
+                    }
+                  },
+                  "Build": {
+                    "id": "Build",
+                    "path": "AppPipelineStack/GlueAppPipeline/Pipeline/Build",
+                    "children": {
+                      "CdkSynth": {
+                        "id": "CdkSynth",
+                        "path": "AppPipelineStack/GlueAppPipeline/Pipeline/Build/CdkSynth",
+                        "children": {
+                          "CdkBuildProject": {
+                            "id": "CdkBuildProject",
+                            "path": "AppPipelineStack/GlueAppPipeline/Pipeline/Build/CdkSynth/CdkBuildProject",
+                            "children": {
+                              "Role": {
+                                "id": "Role",
+                                "path": "AppPipelineStack/GlueAppPipeline/Pipeline/Build/CdkSynth/CdkBuildProject/Role",
+                                "children": {
+                                  "ImportRole": {
+                                    "id": "ImportRole",
+                                    "path": "AppPipelineStack/GlueAppPipeline/Pipeline/Build/CdkSynth/CdkBuildProject/Role/ImportRole",
+                                    "constructInfo": {
+                                      "fqn": "aws-cdk-lib.Resource",
+                                      "version": "2.87.0"
+                                    }
+                                  },
+                                  "Resource": {
+                                    "id": "Resource",
+                                    "path": "AppPipelineStack/GlueAppPipeline/Pipeline/Build/CdkSynth/CdkBuildProject/Role/Resource",
+                                    "attributes": {
+                                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                                      "aws:cdk:cloudformation:props": {
+                                        "assumeRolePolicyDocument": {
+                                          "Statement": [
+                                            {
+                                              "Action": "sts:AssumeRole",
+                                              "Effect": "Allow",
+                                              "Principal": {
+                                                "Service": "codebuild.amazonaws.com"
+                                              }
+                                            }
+                                          ],
+                                          "Version": "2012-10-17"
+                                        }
+                                      }
+                                    },
+                                    "constructInfo": {
+                                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                                      "version": "2.87.0"
+                                    }
+                                  },
+                                  "DefaultPolicy": {
+                                    "id": "DefaultPolicy",
+                                    "path": "AppPipelineStack/GlueAppPipeline/Pipeline/Build/CdkSynth/CdkBuildProject/Role/DefaultPolicy",
+                                    "children": {
+                                      "Resource": {
+                                        "id": "Resource",
+                                        "path": "AppPipelineStack/GlueAppPipeline/Pipeline/Build/CdkSynth/CdkBuildProject/Role/DefaultPolicy/Resource",
+                                        "attributes": {
+                                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                                          "aws:cdk:cloudformation:props": {
+                                            "policyDocument": {
+                                              "Statement": [
+                                                {
+                                                  "Action": [
+                                                    "logs:CreateLogGroup",
+                                                    "logs:CreateLogStream",
+                                                    "logs:PutLogEvents"
+                                                  ],
+                                                  "Effect": "Allow",
+                                                  "Resource": [
+                                                    {
+                                                      "Fn::Join": [
+                                                        "",
+                                                        [
+                                                          "arn:aws:logs:us-west-2:009507777973:log-group:/aws/codebuild/",
+                                                          {
+                                                            "Ref": "GlueAppPipelineBuildCdkSynthCdkBuildProject3E6F0E77"
+                                                          },
+                                                          ":*"
+                                                        ]
+                                                      ]
+                                                    },
+                                                    {
+                                                      "Fn::Join": [
+                                                        "",
+                                                        [
+                                                          "arn:aws:logs:us-west-2:009507777973:log-group:/aws/codebuild/",
+                                                          {
+                                                            "Ref": "GlueAppPipelineBuildCdkSynthCdkBuildProject3E6F0E77"
+                                                          }
+                                                        ]
+                                                      ]
+                                                    }
+                                                  ]
+                                                },
+                                                {
+                                                  "Action": [
+                                                    "codebuild:BatchPutCodeCoverages",
+                                                    "codebuild:BatchPutTestCases",
+                                                    "codebuild:CreateReport",
+                                                    "codebuild:CreateReportGroup",
+                                                    "codebuild:UpdateReport"
+                                                  ],
+                                                  "Effect": "Allow",
+                                                  "Resource": {
+                                                    "Fn::Join": [
+                                                      "",
+                                                      [
+                                                        "arn:aws:codebuild:us-west-2:009507777973:report-group/",
+                                                        {
+                                                          "Ref": "GlueAppPipelineBuildCdkSynthCdkBuildProject3E6F0E77"
+                                                        },
+                                                        "-*"
+                                                      ]
+                                                    ]
+                                                  }
+                                                },
+                                                {
+                                                  "Action": [
+                                                    "s3:Abort*",
+                                                    "s3:DeleteObject*",
+                                                    "s3:GetBucket*",
+                                                    "s3:GetObject*",
+                                                    "s3:List*",
+                                                    "s3:PutObject",
+                                                    "s3:PutObjectLegalHold",
+                                                    "s3:PutObjectRetention",
+                                                    "s3:PutObjectTagging",
+                                                    "s3:PutObjectVersionTagging"
+                                                  ],
+                                                  "Effect": "Allow",
+                                                  "Resource": [
+                                                    {
+                                                      "Fn::GetAtt": [
+                                                        "GlueAppPipelineArtifactsBucket13CABAEB",
+                                                        "Arn"
+                                                      ]
+                                                    },
+                                                    {
+                                                      "Fn::Join": [
+                                                        "",
+                                                        [
+                                                          {
+                                                            "Fn::GetAtt": [
+                                                              "GlueAppPipelineArtifactsBucket13CABAEB",
+                                                              "Arn"
+                                                            ]
+                                                          },
+                                                          "/*"
+                                                        ]
+                                                      ]
+                                                    }
+                                                  ]
+                                                },
+                                                {
+                                                  "Action": [
+                                                    "kms:Decrypt",
+                                                    "kms:DescribeKey",
+                                                    "kms:Encrypt",
+                                                    "kms:GenerateDataKey*",
+                                                    "kms:ReEncrypt*"
+                                                  ],
+                                                  "Effect": "Allow",
+                                                  "Resource": {
+                                                    "Fn::GetAtt": [
+                                                      "GlueAppPipelineArtifactsBucketEncryptionKey4573972C",
+                                                      "Arn"
+                                                    ]
+                                                  }
+                                                }
+                                              ],
+                                              "Version": "2012-10-17"
+                                            },
+                                            "policyName": "GlueAppPipelineBuildCdkSynthCdkBuildProjectRoleDefaultPolicy11A2EA2A",
+                                            "roles": [
+                                              {
+                                                "Ref": "GlueAppPipelineBuildCdkSynthCdkBuildProjectRole8AB61200"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        "constructInfo": {
+                                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                                          "version": "2.87.0"
+                                        }
+                                      }
+                                    },
+                                    "constructInfo": {
+                                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                                      "version": "2.87.0"
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                                  "version": "2.87.0"
+                                }
+                              },
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "AppPipelineStack/GlueAppPipeline/Pipeline/Build/CdkSynth/CdkBuildProject/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::CodeBuild::Project",
+                                  "aws:cdk:cloudformation:props": {
+                                    "artifacts": {
+                                      "type": "CODEPIPELINE"
+                                    },
+                                    "environment": {
+                                      "type": "LINUX_CONTAINER",
+                                      "image": "aws/codebuild/standard:7.0",
+                                      "imagePullCredentialsType": "CODEBUILD",
+                                      "privilegedMode": true,
+                                      "computeType": "BUILD_GENERAL1_SMALL"
+                                    },
+                                    "serviceRole": {
+                                      "Fn::GetAtt": [
+                                        "GlueAppPipelineBuildCdkSynthCdkBuildProjectRole8AB61200",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "source": {
+                                      "type": "CODEPIPELINE",
+                                      "buildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"install\": {\n      \"commands\": [\n        \"pip install -r requirements.txt\",\n        \"pip install -r requirements-dev.txt\",\n        \"npm install -g aws-cdk\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"cdk synth\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"base-directory\": \"cdk.out\",\n    \"files\": \"**/*\"\n  }\n}"
+                                    },
+                                    "cache": {
+                                      "type": "NO_CACHE"
+                                    },
+                                    "description": "Pipeline step AppPipelineStack/Pipeline/Build/CdkSynth",
+                                    "encryptionKey": {
+                                      "Fn::GetAtt": [
+                                        "GlueAppPipelineArtifactsBucketEncryptionKey4573972C",
+                                        "Arn"
+                                      ]
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_codebuild.CfnProject",
+                                  "version": "2.87.0"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_codebuild.PipelineProject",
+                              "version": "2.87.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "constructs.Construct",
+                          "version": "10.4.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "constructs.Construct",
+                      "version": "10.4.2"
+                    }
+                  },
+                  "UpdatePipeline": {
+                    "id": "UpdatePipeline",
+                    "path": "AppPipelineStack/GlueAppPipeline/Pipeline/UpdatePipeline",
+                    "children": {
+                      "SelfMutate": {
+                        "id": "SelfMutate",
+                        "path": "AppPipelineStack/GlueAppPipeline/Pipeline/UpdatePipeline/SelfMutate",
+                        "constructInfo": {
+                          "fqn": "constructs.Construct",
+                          "version": "10.4.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "constructs.Construct",
+                      "version": "10.4.2"
+                    }
+                  },
+                  "Assets": {
+                    "id": "Assets",
+                    "path": "AppPipelineStack/GlueAppPipeline/Pipeline/Assets",
+                    "children": {
+                      "FileAsset1": {
+                        "id": "FileAsset1",
+                        "path": "AppPipelineStack/GlueAppPipeline/Pipeline/Assets/FileAsset1",
+                        "constructInfo": {
+                          "fqn": "constructs.Construct",
+                          "version": "10.4.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "constructs.Construct",
+                      "version": "10.4.2"
+                    }
+                  },
+                  "DevAppStage": {
+                    "id": "DevAppStage",
+                    "path": "AppPipelineStack/GlueAppPipeline/Pipeline/DevAppStage",
+                    "children": {
+                      "Prepare": {
+                        "id": "Prepare",
+                        "path": "AppPipelineStack/GlueAppPipeline/Pipeline/DevAppStage/Prepare",
+                        "constructInfo": {
+                          "fqn": "constructs.Construct",
+                          "version": "10.4.2"
+                        }
+                      },
+                      "Deploy": {
+                        "id": "Deploy",
+                        "path": "AppPipelineStack/GlueAppPipeline/Pipeline/DevAppStage/Deploy",
+                        "constructInfo": {
+                          "fqn": "constructs.Construct",
+                          "version": "10.4.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "constructs.Construct",
+                      "version": "10.4.2"
+                    }
+                  },
+                  "MutableRolearn:${AWS::Partition}:iam::095929019002:role--cdk-hnb659fds-deploy-role-095929019002-us-west-2": {
+                    "id": "MutableRolearn:${AWS::Partition}:iam::095929019002:role--cdk-hnb659fds-deploy-role-095929019002-us-west-2",
+                    "path": "AppPipelineStack/GlueAppPipeline/Pipeline/MutableRolearn:${AWS::Partition}:iam::095929019002:role--cdk-hnb659fds-deploy-role-095929019002-us-west-2",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.87.0"
+                    }
+                  },
+                  "arn:${AWS::Partition}:iam::095929019002:role--cdk-hnb659fds-deploy-role-095929019002-us-west-2": {
+                    "id": "arn:${AWS::Partition}:iam::095929019002:role--cdk-hnb659fds-deploy-role-095929019002-us-west-2",
+                    "path": "AppPipelineStack/GlueAppPipeline/Pipeline/arn:${AWS::Partition}:iam::095929019002:role--cdk-hnb659fds-deploy-role-095929019002-us-west-2",
+                    "children": {
+                      "8389e75f-0810-4838-bf64-d6f85a95cf83": {
+                        "id": "8389e75f-0810-4838-bf64-d6f85a95cf83",
+                        "path": "AppPipelineStack/GlueAppPipeline/Pipeline/arn:${AWS::Partition}:iam::095929019002:role--cdk-hnb659fds-deploy-role-095929019002-us-west-2/8389e75f-0810-4838-bf64-d6f85a95cf83",
+                        "constructInfo": {
+                          "fqn": "constructs.Construct",
+                          "version": "10.4.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.87.0"
+                    }
+                  },
+                  "MutableRolearn:${AWS::Partition}:iam::095929019002:role--cdk-hnb659fds-cfn-exec-role-095929019002-us-west-2": {
+                    "id": "MutableRolearn:${AWS::Partition}:iam::095929019002:role--cdk-hnb659fds-cfn-exec-role-095929019002-us-west-2",
+                    "path": "AppPipelineStack/GlueAppPipeline/Pipeline/MutableRolearn:${AWS::Partition}:iam::095929019002:role--cdk-hnb659fds-cfn-exec-role-095929019002-us-west-2",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.87.0"
+                    }
+                  },
+                  "arn:${AWS::Partition}:iam::095929019002:role--cdk-hnb659fds-cfn-exec-role-095929019002-us-west-2": {
+                    "id": "arn:${AWS::Partition}:iam::095929019002:role--cdk-hnb659fds-cfn-exec-role-095929019002-us-west-2",
+                    "path": "AppPipelineStack/GlueAppPipeline/Pipeline/arn:${AWS::Partition}:iam::095929019002:role--cdk-hnb659fds-cfn-exec-role-095929019002-us-west-2",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.87.0"
+                    }
+                  },
+                  "ProdAppStage": {
+                    "id": "ProdAppStage",
+                    "path": "AppPipelineStack/GlueAppPipeline/Pipeline/ProdAppStage",
+                    "children": {
+                      "ApproveProductionApp": {
+                        "id": "ApproveProductionApp",
+                        "path": "AppPipelineStack/GlueAppPipeline/Pipeline/ProdAppStage/ApproveProductionApp",
+                        "children": {
+                          "CodePipelineActionRole": {
+                            "id": "CodePipelineActionRole",
+                            "path": "AppPipelineStack/GlueAppPipeline/Pipeline/ProdAppStage/ApproveProductionApp/CodePipelineActionRole",
+                            "children": {
+                              "ImportCodePipelineActionRole": {
+                                "id": "ImportCodePipelineActionRole",
+                                "path": "AppPipelineStack/GlueAppPipeline/Pipeline/ProdAppStage/ApproveProductionApp/CodePipelineActionRole/ImportCodePipelineActionRole",
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.Resource",
+                                  "version": "2.87.0"
+                                }
+                              },
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "AppPipelineStack/GlueAppPipeline/Pipeline/ProdAppStage/ApproveProductionApp/CodePipelineActionRole/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                                  "aws:cdk:cloudformation:props": {
+                                    "assumeRolePolicyDocument": {
+                                      "Statement": [
+                                        {
+                                          "Action": "sts:AssumeRole",
+                                          "Effect": "Allow",
+                                          "Principal": {
+                                            "AWS": "arn:aws:iam::009507777973:root"
+                                          }
+                                        }
+                                      ],
+                                      "Version": "2012-10-17"
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                                  "version": "2.87.0"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.Role",
+                              "version": "2.87.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "constructs.Construct",
+                          "version": "10.4.2"
+                        }
+                      },
+                      "GlueAppStack.Prepare": {
+                        "id": "GlueAppStack.Prepare",
+                        "path": "AppPipelineStack/GlueAppPipeline/Pipeline/ProdAppStage/GlueAppStack.Prepare",
+                        "constructInfo": {
+                          "fqn": "constructs.Construct",
+                          "version": "10.4.2"
+                        }
+                      },
+                      "GlueAppStack.Deploy": {
+                        "id": "GlueAppStack.Deploy",
+                        "path": "AppPipelineStack/GlueAppPipeline/Pipeline/ProdAppStage/GlueAppStack.Deploy",
+                        "constructInfo": {
+                          "fqn": "constructs.Construct",
+                          "version": "10.4.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "constructs.Construct",
+                      "version": "10.4.2"
+                    }
+                  },
+                  "MutableRolearn:${AWS::Partition}:iam::981445861826:role--cdk-hnb659fds-deploy-role-981445861826-us-west-2": {
+                    "id": "MutableRolearn:${AWS::Partition}:iam::981445861826:role--cdk-hnb659fds-deploy-role-981445861826-us-west-2",
+                    "path": "AppPipelineStack/GlueAppPipeline/Pipeline/MutableRolearn:${AWS::Partition}:iam::981445861826:role--cdk-hnb659fds-deploy-role-981445861826-us-west-2",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.87.0"
+                    }
+                  },
+                  "arn:${AWS::Partition}:iam::981445861826:role--cdk-hnb659fds-deploy-role-981445861826-us-west-2": {
+                    "id": "arn:${AWS::Partition}:iam::981445861826:role--cdk-hnb659fds-deploy-role-981445861826-us-west-2",
+                    "path": "AppPipelineStack/GlueAppPipeline/Pipeline/arn:${AWS::Partition}:iam::981445861826:role--cdk-hnb659fds-deploy-role-981445861826-us-west-2",
+                    "children": {
+                      "8389e75f-0810-4838-bf64-d6f85a95cf83": {
+                        "id": "8389e75f-0810-4838-bf64-d6f85a95cf83",
+                        "path": "AppPipelineStack/GlueAppPipeline/Pipeline/arn:${AWS::Partition}:iam::981445861826:role--cdk-hnb659fds-deploy-role-981445861826-us-west-2/8389e75f-0810-4838-bf64-d6f85a95cf83",
+                        "constructInfo": {
+                          "fqn": "constructs.Construct",
+                          "version": "10.4.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.87.0"
+                    }
+                  },
+                  "MutableRolearn:${AWS::Partition}:iam::981445861826:role--cdk-hnb659fds-cfn-exec-role-981445861826-us-west-2": {
+                    "id": "MutableRolearn:${AWS::Partition}:iam::981445861826:role--cdk-hnb659fds-cfn-exec-role-981445861826-us-west-2",
+                    "path": "AppPipelineStack/GlueAppPipeline/Pipeline/MutableRolearn:${AWS::Partition}:iam::981445861826:role--cdk-hnb659fds-cfn-exec-role-981445861826-us-west-2",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.87.0"
+                    }
+                  },
+                  "arn:${AWS::Partition}:iam::981445861826:role--cdk-hnb659fds-cfn-exec-role-981445861826-us-west-2": {
+                    "id": "arn:${AWS::Partition}:iam::981445861826:role--cdk-hnb659fds-cfn-exec-role-981445861826-us-west-2",
+                    "path": "AppPipelineStack/GlueAppPipeline/Pipeline/arn:${AWS::Partition}:iam::981445861826:role--cdk-hnb659fds-cfn-exec-role-981445861826-us-west-2",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.87.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_codepipeline.Pipeline",
+                  "version": "2.87.0"
+                }
+              },
+              "CodeBuildActionRole": {
+                "id": "CodeBuildActionRole",
+                "path": "AppPipelineStack/GlueAppPipeline/CodeBuildActionRole",
+                "children": {
+                  "ImportCodeBuildActionRole": {
+                    "id": "ImportCodeBuildActionRole",
+                    "path": "AppPipelineStack/GlueAppPipeline/CodeBuildActionRole/ImportCodeBuildActionRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.87.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "AppPipelineStack/GlueAppPipeline/CodeBuildActionRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "AWS": {
+                                  "Fn::GetAtt": [
+                                    "GlueAppPipelineRoleC4698E40",
+                                    "Arn"
+                                  ]
+                                }
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.87.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "AppPipelineStack/GlueAppPipeline/CodeBuildActionRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppPipelineStack/GlueAppPipeline/CodeBuildActionRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "codebuild:BatchGetBuilds",
+                                    "codebuild:StartBuild",
+                                    "codebuild:StopBuild"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "GlueAppPipelineAssetsFileAsset13EFA5B58",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Fn::GetAtt": [
+                                        "GlueAppPipelineBuildCdkSynthCdkBuildProject3E6F0E77",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Fn::GetAtt": [
+                                        "GlueAppPipelineUpdatePipelineSelfMutationD4848EE0",
+                                        "Arn"
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "GlueAppPipelineCodeBuildActionRoleDefaultPolicy763998C2",
+                            "roles": [
+                              {
+                                "Ref": "GlueAppPipelineCodeBuildActionRole78A0C4DA"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.87.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.87.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.87.0"
+                }
+              },
+              "UpdatePipeline": {
+                "id": "UpdatePipeline",
+                "path": "AppPipelineStack/GlueAppPipeline/UpdatePipeline",
+                "children": {
+                  "SelfMutation": {
+                    "id": "SelfMutation",
+                    "path": "AppPipelineStack/GlueAppPipeline/UpdatePipeline/SelfMutation",
+                    "children": {
+                      "Role": {
+                        "id": "Role",
+                        "path": "AppPipelineStack/GlueAppPipeline/UpdatePipeline/SelfMutation/Role",
+                        "children": {
+                          "ImportRole": {
+                            "id": "ImportRole",
+                            "path": "AppPipelineStack/GlueAppPipeline/UpdatePipeline/SelfMutation/Role/ImportRole",
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.Resource",
+                              "version": "2.87.0"
+                            }
+                          },
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "AppPipelineStack/GlueAppPipeline/UpdatePipeline/SelfMutation/Role/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                              "aws:cdk:cloudformation:props": {
+                                "assumeRolePolicyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": "sts:AssumeRole",
+                                      "Effect": "Allow",
+                                      "Principal": {
+                                        "Service": "codebuild.amazonaws.com"
+                                      }
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                              "version": "2.87.0"
+                            }
+                          },
+                          "DefaultPolicy": {
+                            "id": "DefaultPolicy",
+                            "path": "AppPipelineStack/GlueAppPipeline/UpdatePipeline/SelfMutation/Role/DefaultPolicy",
+                            "children": {
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "AppPipelineStack/GlueAppPipeline/UpdatePipeline/SelfMutation/Role/DefaultPolicy/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                                  "aws:cdk:cloudformation:props": {
+                                    "policyDocument": {
+                                      "Statement": [
+                                        {
+                                          "Action": [
+                                            "logs:CreateLogGroup",
+                                            "logs:CreateLogStream",
+                                            "logs:PutLogEvents"
+                                          ],
+                                          "Effect": "Allow",
+                                          "Resource": [
+                                            {
+                                              "Fn::Join": [
+                                                "",
+                                                [
+                                                  "arn:aws:logs:us-west-2:009507777973:log-group:/aws/codebuild/",
+                                                  {
+                                                    "Ref": "GlueAppPipelineUpdatePipelineSelfMutationD4848EE0"
+                                                  },
+                                                  ":*"
+                                                ]
+                                              ]
+                                            },
+                                            {
+                                              "Fn::Join": [
+                                                "",
+                                                [
+                                                  "arn:aws:logs:us-west-2:009507777973:log-group:/aws/codebuild/",
+                                                  {
+                                                    "Ref": "GlueAppPipelineUpdatePipelineSelfMutationD4848EE0"
+                                                  }
+                                                ]
+                                              ]
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "Action": [
+                                            "codebuild:BatchPutCodeCoverages",
+                                            "codebuild:BatchPutTestCases",
+                                            "codebuild:CreateReport",
+                                            "codebuild:CreateReportGroup",
+                                            "codebuild:UpdateReport"
+                                          ],
+                                          "Effect": "Allow",
+                                          "Resource": {
+                                            "Fn::Join": [
+                                              "",
+                                              [
+                                                "arn:aws:codebuild:us-west-2:009507777973:report-group/",
+                                                {
+                                                  "Ref": "GlueAppPipelineUpdatePipelineSelfMutationD4848EE0"
+                                                },
+                                                "-*"
+                                              ]
+                                            ]
+                                          }
+                                        },
+                                        {
+                                          "Action": "sts:AssumeRole",
+                                          "Condition": {
+                                            "ForAnyValue:StringEquals": {
+                                              "iam:ResourceTag/aws-cdk:bootstrap-role": [
+                                                "image-publishing",
+                                                "file-publishing",
+                                                "deploy"
+                                              ]
+                                            }
+                                          },
+                                          "Effect": "Allow",
+                                          "Resource": "arn:*:iam::009507777973:role/*"
+                                        },
+                                        {
+                                          "Action": [
+                                            "cloudformation:DescribeStacks",
+                                            "s3:ListBucket"
+                                          ],
+                                          "Effect": "Allow",
+                                          "Resource": "*"
+                                        },
+                                        {
+                                          "Action": [
+                                            "s3:GetBucket*",
+                                            "s3:GetObject*",
+                                            "s3:List*"
+                                          ],
+                                          "Effect": "Allow",
+                                          "Resource": [
+                                            {
+                                              "Fn::GetAtt": [
+                                                "GlueAppPipelineArtifactsBucket13CABAEB",
+                                                "Arn"
+                                              ]
+                                            },
+                                            {
+                                              "Fn::Join": [
+                                                "",
+                                                [
+                                                  {
+                                                    "Fn::GetAtt": [
+                                                      "GlueAppPipelineArtifactsBucket13CABAEB",
+                                                      "Arn"
+                                                    ]
+                                                  },
+                                                  "/*"
+                                                ]
+                                              ]
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "Action": [
+                                            "kms:Decrypt",
+                                            "kms:DescribeKey",
+                                            "kms:Encrypt",
+                                            "kms:GenerateDataKey*",
+                                            "kms:ReEncrypt*"
+                                          ],
+                                          "Effect": "Allow",
+                                          "Resource": {
+                                            "Fn::GetAtt": [
+                                              "GlueAppPipelineArtifactsBucketEncryptionKey4573972C",
+                                              "Arn"
+                                            ]
+                                          }
+                                        }
+                                      ],
+                                      "Version": "2012-10-17"
+                                    },
+                                    "policyName": "GlueAppPipelineUpdatePipelineSelfMutationRoleDefaultPolicy953E1981",
+                                    "roles": [
+                                      {
+                                        "Ref": "GlueAppPipelineUpdatePipelineSelfMutationRoleCB0E7151"
+                                      }
+                                    ]
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                                  "version": "2.87.0"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.Policy",
+                              "version": "2.87.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.Role",
+                          "version": "2.87.0"
+                        }
+                      },
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppPipelineStack/GlueAppPipeline/UpdatePipeline/SelfMutation/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::CodeBuild::Project",
+                          "aws:cdk:cloudformation:props": {
+                            "artifacts": {
+                              "type": "CODEPIPELINE"
+                            },
+                            "environment": {
+                              "type": "LINUX_CONTAINER",
+                              "image": "aws/codebuild/standard:7.0",
+                              "imagePullCredentialsType": "CODEBUILD",
+                              "privilegedMode": false,
+                              "computeType": "BUILD_GENERAL1_SMALL"
+                            },
+                            "serviceRole": {
+                              "Fn::GetAtt": [
+                                "GlueAppPipelineUpdatePipelineSelfMutationRoleCB0E7151",
+                                "Arn"
+                              ]
+                            },
+                            "source": {
+                              "type": "CODEPIPELINE",
+                              "buildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"install\": {\n      \"commands\": [\n        \"npm install -g aws-cdk@2\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"cdk -a . deploy AppPipelineStack --require-approval=never --verbose\"\n      ]\n    }\n  }\n}"
+                            },
+                            "cache": {
+                              "type": "NO_CACHE"
+                            },
+                            "description": "Pipeline step AppPipelineStack/Pipeline/UpdatePipeline/SelfMutate",
+                            "encryptionKey": {
+                              "Fn::GetAtt": [
+                                "GlueAppPipelineArtifactsBucketEncryptionKey4573972C",
+                                "Arn"
+                              ]
+                            },
+                            "name": "GlueAppPipeline-selfupdate"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_codebuild.CfnProject",
+                          "version": "2.87.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_codebuild.PipelineProject",
+                      "version": "2.87.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.4.2"
+                }
+              },
+              "Assets": {
+                "id": "Assets",
+                "path": "AppPipelineStack/GlueAppPipeline/Assets",
+                "children": {
+                  "FileRole": {
+                    "id": "FileRole",
+                    "path": "AppPipelineStack/GlueAppPipeline/Assets/FileRole",
+                    "children": {
+                      "ImportFileRole": {
+                        "id": "ImportFileRole",
+                        "path": "AppPipelineStack/GlueAppPipeline/Assets/FileRole/ImportFileRole",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.Resource",
+                          "version": "2.87.0"
+                        }
+                      },
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppPipelineStack/GlueAppPipeline/Assets/FileRole/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                          "aws:cdk:cloudformation:props": {
+                            "assumeRolePolicyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "sts:AssumeRole",
+                                  "Effect": "Allow",
+                                  "Principal": {
+                                    "AWS": "arn:aws:iam::009507777973:root",
+                                    "Service": "codebuild.amazonaws.com"
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                          "version": "2.87.0"
+                        }
+                      },
+                      "DefaultPolicy": {
+                        "id": "DefaultPolicy",
+                        "path": "AppPipelineStack/GlueAppPipeline/Assets/FileRole/DefaultPolicy",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "AppPipelineStack/GlueAppPipeline/Assets/FileRole/DefaultPolicy/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                              "aws:cdk:cloudformation:props": {
+                                "policyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": [
+                                        "logs:CreateLogGroup",
+                                        "logs:CreateLogStream",
+                                        "logs:PutLogEvents"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": "arn:aws:logs:us-west-2:009507777973:log-group:/aws/codebuild/*"
+                                    },
+                                    {
+                                      "Action": [
+                                        "codebuild:BatchPutCodeCoverages",
+                                        "codebuild:BatchPutTestCases",
+                                        "codebuild:CreateReport",
+                                        "codebuild:CreateReportGroup",
+                                        "codebuild:UpdateReport"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": "arn:aws:codebuild:us-west-2:009507777973:report-group/*"
+                                    },
+                                    {
+                                      "Action": [
+                                        "codebuild:BatchGetBuilds",
+                                        "codebuild:StartBuild",
+                                        "codebuild:StopBuild"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": "*"
+                                    },
+                                    {
+                                      "Action": "sts:AssumeRole",
+                                      "Effect": "Allow",
+                                      "Resource": [
+                                        {
+                                          "Fn::Sub": "arn:${AWS::Partition}:iam::095929019002:role/cdk-hnb659fds-file-publishing-role-095929019002-us-west-2"
+                                        },
+                                        {
+                                          "Fn::Sub": "arn:${AWS::Partition}:iam::981445861826:role/cdk-hnb659fds-file-publishing-role-981445861826-us-west-2"
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "Action": [
+                                        "s3:GetBucket*",
+                                        "s3:GetObject*",
+                                        "s3:List*"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": [
+                                        {
+                                          "Fn::GetAtt": [
+                                            "GlueAppPipelineArtifactsBucket13CABAEB",
+                                            "Arn"
+                                          ]
+                                        },
+                                        {
+                                          "Fn::Join": [
+                                            "",
+                                            [
+                                              {
+                                                "Fn::GetAtt": [
+                                                  "GlueAppPipelineArtifactsBucket13CABAEB",
+                                                  "Arn"
+                                                ]
+                                              },
+                                              "/*"
+                                            ]
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "Action": [
+                                        "kms:Decrypt",
+                                        "kms:DescribeKey"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": {
+                                        "Fn::GetAtt": [
+                                          "GlueAppPipelineArtifactsBucketEncryptionKey4573972C",
+                                          "Arn"
+                                        ]
+                                      }
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                },
+                                "policyName": "GlueAppPipelineAssetsFileRoleDefaultPolicy49E9BF10",
+                                "roles": [
+                                  {
+                                    "Ref": "GlueAppPipelineAssetsFileRole066D52DF"
+                                  }
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                              "version": "2.87.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.Policy",
+                          "version": "2.87.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Role",
+                      "version": "2.87.0"
+                    }
+                  },
+                  "FileAsset1": {
+                    "id": "FileAsset1",
+                    "path": "AppPipelineStack/GlueAppPipeline/Assets/FileAsset1",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppPipelineStack/GlueAppPipeline/Assets/FileAsset1/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::CodeBuild::Project",
+                          "aws:cdk:cloudformation:props": {
+                            "artifacts": {
+                              "type": "CODEPIPELINE"
+                            },
+                            "environment": {
+                              "type": "LINUX_CONTAINER",
+                              "image": "aws/codebuild/standard:7.0",
+                              "imagePullCredentialsType": "CODEBUILD",
+                              "privilegedMode": false,
+                              "computeType": "BUILD_GENERAL1_SMALL"
+                            },
+                            "serviceRole": {
+                              "Fn::GetAtt": [
+                                "GlueAppPipelineAssetsFileRole066D52DF",
+                                "Arn"
+                              ]
+                            },
+                            "source": {
+                              "type": "CODEPIPELINE",
+                              "buildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"install\": {\n      \"commands\": [\n        \"npm install -g cdk-assets@2\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"cdk-assets --path \\\"assembly-AppPipelineStack-DevAppStage/AppPipelineStackDevAppStageGlueAppStackD17DEC16.assets.json\\\" --verbose publish \\\"9b0326c6d1764d67103431205db8553d55413121ec0fb570fa215f7423097f9a:095929019002-us-west-2\\\"\",\n        \"cdk-assets --path \\\"assembly-AppPipelineStack-ProdAppStage/AppPipelineStackProdAppStageGlueAppStack90981941.assets.json\\\" --verbose publish \\\"9b0326c6d1764d67103431205db8553d55413121ec0fb570fa215f7423097f9a:981445861826-us-west-2\\\"\"\n      ]\n    }\n  }\n}"
+                            },
+                            "cache": {
+                              "type": "NO_CACHE"
+                            },
+                            "description": "Pipeline step AppPipelineStack/Pipeline/Assets/FileAsset1",
+                            "encryptionKey": {
+                              "Fn::GetAtt": [
+                                "GlueAppPipelineArtifactsBucketEncryptionKey4573972C",
+                                "Arn"
+                              ]
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_codebuild.CfnProject",
+                          "version": "2.87.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_codebuild.PipelineProject",
+                      "version": "2.87.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.4.2"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.pipelines.CodePipeline",
+              "version": "2.87.0"
+            }
+          },
+          "DevAppStage": {
+            "id": "DevAppStage",
+            "path": "AppPipelineStack/DevAppStage",
+            "children": {
+              "GlueAppStack": {
+                "id": "GlueAppStack",
+                "path": "AppPipelineStack/DevAppStage/GlueAppStack",
+                "children": {
+                  "ImportedGlueJobRole-dev": {
+                    "id": "ImportedGlueJobRole-dev",
+                    "path": "AppPipelineStack/DevAppStage/GlueAppStack/ImportedGlueJobRole-dev",
+                    "children": {
+                      "PolicyAppPipelineStackDevAppStageGlueAppStackImportedGlueJobRoledevA86687DC": {
+                        "id": "PolicyAppPipelineStackDevAppStageGlueAppStackImportedGlueJobRoledevA86687DC",
+                        "path": "AppPipelineStack/DevAppStage/GlueAppStack/ImportedGlueJobRole-dev/PolicyAppPipelineStackDevAppStageGlueAppStackImportedGlueJobRoledevA86687DC",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "AppPipelineStack/DevAppStage/GlueAppStack/ImportedGlueJobRole-dev/PolicyAppPipelineStackDevAppStageGlueAppStackImportedGlueJobRoledevA86687DC/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                              "aws:cdk:cloudformation:props": {
+                                "policyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": [
+                                        "s3:GetBucket*",
+                                        "s3:GetObject*",
+                                        "s3:List*"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": [
+                                        "arn:aws:s3:::cdk-hnb659fds-assets-095929019002-us-west-2",
+                                        "arn:aws:s3:::cdk-hnb659fds-assets-095929019002-us-west-2/*"
+                                      ]
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                },
+                                "policyName": "PolicyAppPipelineStackDevAppStageGlueAppStackImportedGlueJobRoledevA86687DC",
+                                "roles": [
+                                  "DevInfraStage-Infrastructure-GlueJobRoledev*"
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                              "version": "2.87.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.Policy",
+                          "version": "2.87.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.87.0"
+                    }
+                  },
+                  "ProcessLegislators-dev": {
+                    "id": "ProcessLegislators-dev",
+                    "path": "AppPipelineStack/DevAppStage/GlueAppStack/ProcessLegislators-dev",
+                    "children": {
+                      "Code2b7a48a0775cbb52f1f78c9afa065b03": {
+                        "id": "Code2b7a48a0775cbb52f1f78c9afa065b03",
+                        "path": "AppPipelineStack/DevAppStage/GlueAppStack/ProcessLegislators-dev/Code2b7a48a0775cbb52f1f78c9afa065b03",
+                        "children": {
+                          "Stage": {
+                            "id": "Stage",
+                            "path": "AppPipelineStack/DevAppStage/GlueAppStack/ProcessLegislators-dev/Code2b7a48a0775cbb52f1f78c9afa065b03/Stage",
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.AssetStaging",
+                              "version": "2.87.0"
+                            }
+                          },
+                          "AssetBucket": {
+                            "id": "AssetBucket",
+                            "path": "AppPipelineStack/DevAppStage/GlueAppStack/ProcessLegislators-dev/Code2b7a48a0775cbb52f1f78c9afa065b03/AssetBucket",
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                              "version": "2.87.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                          "version": "2.87.0"
+                        }
+                      },
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppPipelineStack/DevAppStage/GlueAppStack/ProcessLegislators-dev/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::Glue::Job",
+                          "aws:cdk:cloudformation:props": {
+                            "command": {
+                              "name": "glueetl",
+                              "scriptLocation": "s3://cdk-hnb659fds-assets-095929019002-us-west-2/9b0326c6d1764d67103431205db8553d55413121ec0fb570fa215f7423097f9a.py",
+                              "pythonVersion": "3"
+                            },
+                            "role": "arn:aws:iam::095929019002:role/DevInfraStage-Infrastructure-GlueJobRoledev*",
+                            "defaultArguments": {
+                              "--job-language": "python",
+                              "--input_location": "s3://awsglue-datasets/examples/us-legislators/all",
+                              "--output_location": "s3://glue-data-pipeline-dev-095929019002/output/",
+                              "--database_name": "glue_database_dev",
+                              "--enable-metrics": "",
+                              "--enable-continuous-cloudwatch-log": ""
+                            },
+                            "description": "Process legislators data for dev environment",
+                            "executionProperty": {
+                              "maxConcurrentRuns": 1
+                            },
+                            "glueVersion": "4.0",
+                            "timeout": 60
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_glue.CfnJob",
+                          "version": "2.87.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-glue-alpha.Job",
+                      "version": "2.87.0-alpha.0"
+                    }
+                  },
+                  "CDKMetadata": {
+                    "id": "CDKMetadata",
+                    "path": "AppPipelineStack/DevAppStage/GlueAppStack/CDKMetadata",
+                    "children": {
+                      "Default": {
+                        "id": "Default",
+                        "path": "AppPipelineStack/DevAppStage/GlueAppStack/CDKMetadata/Default",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.CfnResource",
+                          "version": "2.87.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "constructs.Construct",
+                      "version": "10.4.2"
+                    }
+                  },
+                  "BootstrapVersion": {
+                    "id": "BootstrapVersion",
+                    "path": "AppPipelineStack/DevAppStage/GlueAppStack/BootstrapVersion",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnParameter",
+                      "version": "2.87.0"
+                    }
+                  },
+                  "CheckBootstrapVersion": {
+                    "id": "CheckBootstrapVersion",
+                    "path": "AppPipelineStack/DevAppStage/GlueAppStack/CheckBootstrapVersion",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnRule",
+                      "version": "2.87.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Stack",
+                  "version": "2.87.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.Stage",
+              "version": "2.87.0"
+            }
+          },
+          "ProdAppStage": {
+            "id": "ProdAppStage",
+            "path": "AppPipelineStack/ProdAppStage",
+            "children": {
+              "GlueAppStack": {
+                "id": "GlueAppStack",
+                "path": "AppPipelineStack/ProdAppStage/GlueAppStack",
+                "children": {
+                  "ImportedGlueJobRole-prod": {
+                    "id": "ImportedGlueJobRole-prod",
+                    "path": "AppPipelineStack/ProdAppStage/GlueAppStack/ImportedGlueJobRole-prod",
+                    "children": {
+                      "PolicyAppPipelineStackProdAppStageGlueAppStackImportedGlueJobRoleprod7183AD78": {
+                        "id": "PolicyAppPipelineStackProdAppStageGlueAppStackImportedGlueJobRoleprod7183AD78",
+                        "path": "AppPipelineStack/ProdAppStage/GlueAppStack/ImportedGlueJobRole-prod/PolicyAppPipelineStackProdAppStageGlueAppStackImportedGlueJobRoleprod7183AD78",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "AppPipelineStack/ProdAppStage/GlueAppStack/ImportedGlueJobRole-prod/PolicyAppPipelineStackProdAppStageGlueAppStackImportedGlueJobRoleprod7183AD78/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                              "aws:cdk:cloudformation:props": {
+                                "policyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": [
+                                        "s3:GetBucket*",
+                                        "s3:GetObject*",
+                                        "s3:List*"
+                                      ],
+                                      "Effect": "Allow",
+                                      "Resource": [
+                                        "arn:aws:s3:::cdk-hnb659fds-assets-981445861826-us-west-2",
+                                        "arn:aws:s3:::cdk-hnb659fds-assets-981445861826-us-west-2/*"
+                                      ]
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                },
+                                "policyName": "PolicyAppPipelineStackProdAppStageGlueAppStackImportedGlueJobRoleprod7183AD78",
+                                "roles": [
+                                  "DevInfraStage-Infrastructure-GlueJobRoleprod*"
+                                ]
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                              "version": "2.87.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.Policy",
+                          "version": "2.87.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.87.0"
+                    }
+                  },
+                  "ProcessLegislators-prod": {
+                    "id": "ProcessLegislators-prod",
+                    "path": "AppPipelineStack/ProdAppStage/GlueAppStack/ProcessLegislators-prod",
+                    "children": {
+                      "Code2b7a48a0775cbb52f1f78c9afa065b03": {
+                        "id": "Code2b7a48a0775cbb52f1f78c9afa065b03",
+                        "path": "AppPipelineStack/ProdAppStage/GlueAppStack/ProcessLegislators-prod/Code2b7a48a0775cbb52f1f78c9afa065b03",
+                        "children": {
+                          "Stage": {
+                            "id": "Stage",
+                            "path": "AppPipelineStack/ProdAppStage/GlueAppStack/ProcessLegislators-prod/Code2b7a48a0775cbb52f1f78c9afa065b03/Stage",
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.AssetStaging",
+                              "version": "2.87.0"
+                            }
+                          },
+                          "AssetBucket": {
+                            "id": "AssetBucket",
+                            "path": "AppPipelineStack/ProdAppStage/GlueAppStack/ProcessLegislators-prod/Code2b7a48a0775cbb52f1f78c9afa065b03/AssetBucket",
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                              "version": "2.87.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                          "version": "2.87.0"
+                        }
+                      },
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "AppPipelineStack/ProdAppStage/GlueAppStack/ProcessLegislators-prod/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::Glue::Job",
+                          "aws:cdk:cloudformation:props": {
+                            "command": {
+                              "name": "glueetl",
+                              "scriptLocation": "s3://cdk-hnb659fds-assets-981445861826-us-west-2/9b0326c6d1764d67103431205db8553d55413121ec0fb570fa215f7423097f9a.py",
+                              "pythonVersion": "3"
+                            },
+                            "role": "arn:aws:iam::981445861826:role/DevInfraStage-Infrastructure-GlueJobRoleprod*",
+                            "defaultArguments": {
+                              "--job-language": "python",
+                              "--input_location": "s3://awsglue-datasets/examples/us-legislators/all",
+                              "--output_location": "s3://glue-data-pipeline-prod-981445861826/output/",
+                              "--database_name": "glue_database_prod",
+                              "--enable-metrics": "",
+                              "--enable-continuous-cloudwatch-log": ""
+                            },
+                            "description": "Process legislators data for prod environment",
+                            "executionProperty": {
+                              "maxConcurrentRuns": 1
+                            },
+                            "glueVersion": "4.0",
+                            "timeout": 60
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_glue.CfnJob",
+                          "version": "2.87.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-glue-alpha.Job",
+                      "version": "2.87.0-alpha.0"
+                    }
+                  },
+                  "CDKMetadata": {
+                    "id": "CDKMetadata",
+                    "path": "AppPipelineStack/ProdAppStage/GlueAppStack/CDKMetadata",
+                    "children": {
+                      "Default": {
+                        "id": "Default",
+                        "path": "AppPipelineStack/ProdAppStage/GlueAppStack/CDKMetadata/Default",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.CfnResource",
+                          "version": "2.87.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "constructs.Construct",
+                      "version": "10.4.2"
+                    }
+                  },
+                  "BootstrapVersion": {
+                    "id": "BootstrapVersion",
+                    "path": "AppPipelineStack/ProdAppStage/GlueAppStack/BootstrapVersion",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnParameter",
+                      "version": "2.87.0"
+                    }
+                  },
+                  "CheckBootstrapVersion": {
+                    "id": "CheckBootstrapVersion",
+                    "path": "AppPipelineStack/ProdAppStage/GlueAppStack/CheckBootstrapVersion",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnRule",
+                      "version": "2.87.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Stack",
+                  "version": "2.87.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.Stage",
+              "version": "2.87.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "AppPipelineStack/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "AppPipelineStack/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.87.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.4.2"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "AppPipelineStack/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.87.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "AppPipelineStack/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.87.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.87.0"
+        }
+      },
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.4.2"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.87.0"
+    }
+  }
+}

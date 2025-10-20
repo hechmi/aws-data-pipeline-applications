@@ -1,0 +1,71 @@
+{
+  "version": "32.0.0",
+  "artifacts": {
+    "AppPipelineStackDevAppStageGlueAppStackD17DEC16.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "AppPipelineStackDevAppStageGlueAppStackD17DEC16.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "AppPipelineStackDevAppStageGlueAppStackD17DEC16": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://095929019002/us-west-2",
+      "properties": {
+        "templateFile": "AppPipelineStackDevAppStageGlueAppStackD17DEC16.template.json",
+        "validateOnSynth": true,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::095929019002:role/cdk-hnb659fds-deploy-role-095929019002-us-west-2",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::095929019002:role/cdk-hnb659fds-cfn-exec-role-095929019002-us-west-2",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-095929019002-us-west-2/965cc1f0a33e94503e1075b2a7b16bd988076bc25d79d9b74848f9c6f4ed5920.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "AppPipelineStackDevAppStageGlueAppStackD17DEC16.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::095929019002:role/cdk-hnb659fds-lookup-role-095929019002-us-west-2",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        },
+        "stackName": "DevAppStage-GlueAppStack"
+      },
+      "dependencies": [
+        "AppPipelineStackDevAppStageGlueAppStackD17DEC16.assets"
+      ],
+      "metadata": {
+        "/AppPipelineStack/DevAppStage/GlueAppStack/ImportedGlueJobRole-dev/PolicyAppPipelineStackDevAppStageGlueAppStackImportedGlueJobRoledevA86687DC/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ImportedGlueJobRoledevPolicyAppPipelineStackDevAppStageGlueAppStackImportedGlueJobRoledevA86687DC6F44BC6C"
+          }
+        ],
+        "/AppPipelineStack/DevAppStage/GlueAppStack/ProcessLegislators-dev/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ProcessLegislatorsdevC12310F3"
+          }
+        ],
+        "/AppPipelineStack/DevAppStage/GlueAppStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/AppPipelineStack/DevAppStage/GlueAppStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/AppPipelineStack/DevAppStage/GlueAppStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "AppPipelineStack/DevAppStage/GlueAppStack"
+    }
+  }
+}

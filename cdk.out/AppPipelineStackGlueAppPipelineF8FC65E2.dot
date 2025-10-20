@@ -1,0 +1,61 @@
+digraph G {
+  # Arrows represent an "unlocks" relationship (opposite of dependency). So chosen
+  # because the layout looks more natural that way.
+  # To represent subgraph dependencies, subgraphs are represented by BEGIN/END nodes.
+  # To render: `dot -Tsvg AppPipelineStackGlueAppPipelineF8FC65E2.dot > graph.svg`, open in a browser.
+  node [shape="box"];
+"BEGIN Build" [shape="cds", style="filled", fillcolor="#b7deff"];
+"END Build" [shape="cds", style="filled", fillcolor="#b7deff"];
+"Build.CdkSynth";
+"Source.hechmi/aws-data-pipeline-applications" -> "Build.CdkSynth";
+"BEGIN Build" -> "Build.CdkSynth";
+"Build.CdkSynth" -> "END Build";
+"BEGIN UpdatePipeline" [shape="cds", style="filled", fillcolor="#b7deff"];
+"END UpdatePipeline" [shape="cds", style="filled", fillcolor="#b7deff"];
+"UpdatePipeline.SelfMutate";
+"Build.CdkSynth" -> "UpdatePipeline.SelfMutate";
+"BEGIN UpdatePipeline" -> "UpdatePipeline.SelfMutate";
+"UpdatePipeline.SelfMutate" -> "END UpdatePipeline";
+"BEGIN Assets" [shape="cds", style="filled", fillcolor="#b7deff"];
+"END Assets" [shape="cds", style="filled", fillcolor="#b7deff"];
+"Assets.FileAsset1";
+"UpdatePipeline.SelfMutate" -> "Assets.FileAsset1";
+"BEGIN Assets" -> "Assets.FileAsset1";
+"Assets.FileAsset1" -> "END Assets";
+"BEGIN DevAppStage" [shape="cds", style="filled", fillcolor="#b7deff"];
+"END DevAppStage" [shape="cds", style="filled", fillcolor="#b7deff"];
+"UpdatePipeline.SelfMutate" -> "BEGIN DevAppStage";
+"BEGIN DevAppStage.GlueAppStack" [shape="cds", style="filled", fillcolor="#b7deff"];
+"END DevAppStage.GlueAppStack" [shape="cds", style="filled", fillcolor="#b7deff"];
+"DevAppStage.GlueAppStack.Deploy";
+"DevAppStage.GlueAppStack.Prepare" -> "DevAppStage.GlueAppStack.Deploy";
+"DevAppStage.GlueAppStack.Prepare";
+"Build.CdkSynth" -> "DevAppStage.GlueAppStack.Prepare";
+"Assets.FileAsset1" -> "DevAppStage.GlueAppStack.Prepare";
+"BEGIN DevAppStage.GlueAppStack" -> "DevAppStage.GlueAppStack.Prepare";
+"DevAppStage.GlueAppStack.Deploy" -> "END DevAppStage.GlueAppStack";
+"BEGIN DevAppStage" -> "BEGIN DevAppStage.GlueAppStack";
+"END DevAppStage.GlueAppStack" -> "END DevAppStage";
+"BEGIN ProdAppStage" [shape="cds", style="filled", fillcolor="#b7deff"];
+"END ProdAppStage" [shape="cds", style="filled", fillcolor="#b7deff"];
+"UpdatePipeline.SelfMutate" -> "BEGIN ProdAppStage";
+"END DevAppStage" -> "BEGIN ProdAppStage";
+"BEGIN ProdAppStage.GlueAppStack" [shape="cds", style="filled", fillcolor="#b7deff"];
+"END ProdAppStage.GlueAppStack" [shape="cds", style="filled", fillcolor="#b7deff"];
+"ProdAppStage.ApproveProductionApp" -> "BEGIN ProdAppStage.GlueAppStack";
+"ProdAppStage.GlueAppStack.Deploy";
+"ProdAppStage.GlueAppStack.Prepare" -> "ProdAppStage.GlueAppStack.Deploy";
+"ProdAppStage.GlueAppStack.Prepare";
+"Build.CdkSynth" -> "ProdAppStage.GlueAppStack.Prepare";
+"Assets.FileAsset1" -> "ProdAppStage.GlueAppStack.Prepare";
+"BEGIN ProdAppStage.GlueAppStack" -> "ProdAppStage.GlueAppStack.Prepare";
+"ProdAppStage.GlueAppStack.Deploy" -> "END ProdAppStage.GlueAppStack";
+"ProdAppStage.ApproveProductionApp";
+"BEGIN ProdAppStage" -> "ProdAppStage.ApproveProductionApp";
+"END ProdAppStage.GlueAppStack" -> "END ProdAppStage";
+"BEGIN Source" [shape="cds", style="filled", fillcolor="#b7deff"];
+"END Source" [shape="cds", style="filled", fillcolor="#b7deff"];
+"Source.hechmi/aws-data-pipeline-applications";
+"BEGIN Source" -> "Source.hechmi/aws-data-pipeline-applications";
+"Source.hechmi/aws-data-pipeline-applications" -> "END Source";
+}

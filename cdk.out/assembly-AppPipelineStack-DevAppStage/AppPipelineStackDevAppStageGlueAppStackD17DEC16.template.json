@@ -1,0 +1,104 @@
+{
+ "Resources": {
+  "ImportedGlueJobRoledevPolicyAppPipelineStackDevAppStageGlueAppStackImportedGlueJobRoledevA86687DC6F44BC6C": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        "arn:aws:s3:::cdk-hnb659fds-assets-095929019002-us-west-2",
+        "arn:aws:s3:::cdk-hnb659fds-assets-095929019002-us-west-2/*"
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "PolicyAppPipelineStackDevAppStageGlueAppStackImportedGlueJobRoledevA86687DC",
+    "Roles": [
+     "DevInfraStage-Infrastructure-GlueJobRoledev*"
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "AppPipelineStack/DevAppStage/GlueAppStack/ImportedGlueJobRole-dev/PolicyAppPipelineStackDevAppStageGlueAppStackImportedGlueJobRoledevA86687DC/Resource"
+   }
+  },
+  "ProcessLegislatorsdevC12310F3": {
+   "Type": "AWS::Glue::Job",
+   "Properties": {
+    "Command": {
+     "Name": "glueetl",
+     "PythonVersion": "3",
+     "ScriptLocation": "s3://cdk-hnb659fds-assets-095929019002-us-west-2/9b0326c6d1764d67103431205db8553d55413121ec0fb570fa215f7423097f9a.py"
+    },
+    "Role": "arn:aws:iam::095929019002:role/DevInfraStage-Infrastructure-GlueJobRoledev*",
+    "DefaultArguments": {
+     "--job-language": "python",
+     "--input_location": "s3://awsglue-datasets/examples/us-legislators/all",
+     "--output_location": "s3://glue-data-pipeline-dev-095929019002/output/",
+     "--database_name": "glue_database_dev",
+     "--enable-metrics": "",
+     "--enable-continuous-cloudwatch-log": ""
+    },
+    "Description": "Process legislators data for dev environment",
+    "ExecutionProperty": {
+     "MaxConcurrentRuns": 1
+    },
+    "GlueVersion": "4.0",
+    "Timeout": 60
+   },
+   "Metadata": {
+    "aws:cdk:path": "AppPipelineStack/DevAppStage/GlueAppStack/ProcessLegislators-dev/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/zWOQQ6CMBBFz8K+DEgXulTcuSJwADLUApXSGqYNIYS7mwKu3k/m/5fJ4HaFNY1wpli8h1irBtbKoRhYKcn6SUiGM9WrwhHWwmolFvZszZE2RrxGIukIHgGMOOReDNLlSJJ12kt4tuZlm43thcphp0wXFH//xtIY9bdHSKP7+UcSGNbnZRcUi+utSThcMuDRh5SKJ2+cGiWUB3/AQdaHzgAAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "AppPipelineStack/DevAppStage/GlueAppStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

@@ -1,6 +1,7 @@
 from typing import Dict
 from aws_cdk import (
     Stack,
+    Duration,
     aws_glue_alpha as glue,
     aws_iam as iam
 )
@@ -46,7 +47,7 @@ class GlueAppStack(Stack):
                 "--job-language": "python"
             },
             max_concurrent_runs=1,
-            timeout_minutes=60
+            timeout=Duration.hours(1)
         )
     
     @property

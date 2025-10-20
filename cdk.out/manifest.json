@@ -1,0 +1,204 @@
+{
+  "version": "32.0.0",
+  "artifacts": {
+    "assembly-AppPipelineStack-DevAppStage": {
+      "type": "cdk:cloud-assembly",
+      "properties": {
+        "directoryName": "assembly-AppPipelineStack-DevAppStage",
+        "displayName": "AppPipelineStack/DevAppStage"
+      }
+    },
+    "assembly-AppPipelineStack-ProdAppStage": {
+      "type": "cdk:cloud-assembly",
+      "properties": {
+        "directoryName": "assembly-AppPipelineStack-ProdAppStage",
+        "displayName": "AppPipelineStack/ProdAppStage"
+      }
+    },
+    "AppPipelineStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "AppPipelineStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "AppPipelineStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://009507777973/us-west-2",
+      "properties": {
+        "templateFile": "AppPipelineStack.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::009507777973:role/cdk-hnb659fds-deploy-role-009507777973-us-west-2",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::009507777973:role/cdk-hnb659fds-cfn-exec-role-009507777973-us-west-2",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-009507777973-us-west-2/59cb3f1a0a2bdfbf027344b9824c3a9e862bbbe0653b3c99fe8cc142d516313a.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "AppPipelineStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::009507777973:role/cdk-hnb659fds-lookup-role-009507777973-us-west-2",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "AppPipelineStack.assets"
+      ],
+      "metadata": {
+        "/AppPipelineStack/GlueAppPipeline/Pipeline/ArtifactsBucketEncryptionKey/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueAppPipelineArtifactsBucketEncryptionKey4573972C"
+          }
+        ],
+        "/AppPipelineStack/GlueAppPipeline/Pipeline/ArtifactsBucketEncryptionKeyAlias/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueAppPipelineArtifactsBucketEncryptionKeyAlias3EB7A8BA"
+          }
+        ],
+        "/AppPipelineStack/GlueAppPipeline/Pipeline/ArtifactsBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueAppPipelineArtifactsBucket13CABAEB"
+          }
+        ],
+        "/AppPipelineStack/GlueAppPipeline/Pipeline/ArtifactsBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueAppPipelineArtifactsBucketPolicy3236BFDE"
+          }
+        ],
+        "/AppPipelineStack/GlueAppPipeline/Pipeline/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueAppPipelineRoleC4698E40"
+          }
+        ],
+        "/AppPipelineStack/GlueAppPipeline/Pipeline/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueAppPipelineRoleDefaultPolicy19B308C0"
+          }
+        ],
+        "/AppPipelineStack/GlueAppPipeline/Pipeline/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueAppPipeline18AD4198"
+          }
+        ],
+        "/AppPipelineStack/GlueAppPipeline/Pipeline/Source/hechmi_aws-data-pipeline-applications/CodePipelineActionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueAppPipelineSourcehechmiawsdatapipelineapplicationsCodePipelineActionRole0FA55F97"
+          }
+        ],
+        "/AppPipelineStack/GlueAppPipeline/Pipeline/Source/hechmi_aws-data-pipeline-applications/CodePipelineActionRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueAppPipelineSourcehechmiawsdatapipelineapplicationsCodePipelineActionRoleDefaultPolicy67B8AB3A"
+          }
+        ],
+        "/AppPipelineStack/GlueAppPipeline/Pipeline/Build/CdkSynth/CdkBuildProject/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueAppPipelineBuildCdkSynthCdkBuildProjectRole8AB61200"
+          }
+        ],
+        "/AppPipelineStack/GlueAppPipeline/Pipeline/Build/CdkSynth/CdkBuildProject/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueAppPipelineBuildCdkSynthCdkBuildProjectRoleDefaultPolicy11A2EA2A"
+          }
+        ],
+        "/AppPipelineStack/GlueAppPipeline/Pipeline/Build/CdkSynth/CdkBuildProject/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueAppPipelineBuildCdkSynthCdkBuildProject3E6F0E77"
+          }
+        ],
+        "/AppPipelineStack/GlueAppPipeline/Pipeline/ProdAppStage/ApproveProductionApp/CodePipelineActionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueAppPipelineProdAppStageApproveProductionAppCodePipelineActionRoleB356DE89"
+          }
+        ],
+        "/AppPipelineStack/GlueAppPipeline/CodeBuildActionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueAppPipelineCodeBuildActionRole78A0C4DA"
+          }
+        ],
+        "/AppPipelineStack/GlueAppPipeline/CodeBuildActionRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueAppPipelineCodeBuildActionRoleDefaultPolicy763998C2"
+          }
+        ],
+        "/AppPipelineStack/GlueAppPipeline/UpdatePipeline/SelfMutation/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueAppPipelineUpdatePipelineSelfMutationRoleCB0E7151"
+          }
+        ],
+        "/AppPipelineStack/GlueAppPipeline/UpdatePipeline/SelfMutation/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueAppPipelineUpdatePipelineSelfMutationRoleDefaultPolicy953E1981"
+          }
+        ],
+        "/AppPipelineStack/GlueAppPipeline/UpdatePipeline/SelfMutation/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueAppPipelineUpdatePipelineSelfMutationD4848EE0"
+          }
+        ],
+        "/AppPipelineStack/GlueAppPipeline/Assets/FileRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueAppPipelineAssetsFileRole066D52DF"
+          }
+        ],
+        "/AppPipelineStack/GlueAppPipeline/Assets/FileRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueAppPipelineAssetsFileRoleDefaultPolicy49E9BF10"
+          }
+        ],
+        "/AppPipelineStack/GlueAppPipeline/Assets/FileAsset1/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "GlueAppPipelineAssetsFileAsset13EFA5B58"
+          }
+        ],
+        "/AppPipelineStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/AppPipelineStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/AppPipelineStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "AppPipelineStack"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}
