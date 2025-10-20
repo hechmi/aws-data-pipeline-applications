@@ -1,4 +1,5 @@
 from typing import Dict
+# Test change to verify automatic application pipeline triggering
 from aws_cdk import (
     Stack,
     Duration,
