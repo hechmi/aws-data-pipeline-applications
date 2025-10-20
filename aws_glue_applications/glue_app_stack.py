@@ -21,8 +21,12 @@ class GlueAppStack(Stack):
         self.glue_database_name = config['infrastructure']['exports']['glueDatabase'].replace('dev', stage)
         
         # Import Glue job role from infrastructure stack using ARN
-        # Use the exact role ARN from the infrastructure stack
-        glue_job_role_arn = f"arn:aws:iam::{config[f'{stage}Account']['awsAccountId']}:role/DevInfraStage-Infrastructure-GlueJobRoledev3BDDF23C-w4nsvNMzUqUo"
+        # Use environment-specific role ARN
+        if stage == "dev":
+            glue_job_role_arn = f"arn:aws:iam::{config[f'{stage}Account']['awsAccountId']}:role/DevInfraStage-Infrastructure-GlueJobRoledev3BDDF23C-w4nsvNMzUqUo"
+        else:  # prod
+            glue_job_role_arn = f"arn:aws:iam::{config[f'{stage}Account']['awsAccountId']}:role/ProdInfraStage-Infrastructu-GlueJobRoleprod8C99FE33-3ApfcykBh1Wf"
+        
         self.glue_job_role = iam.Role.from_role_arn(
             self, f"ImportedGlueJobRole-{stage}",
             role_arn=glue_job_role_arn
