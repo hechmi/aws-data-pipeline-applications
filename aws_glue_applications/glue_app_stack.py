@@ -20,11 +20,12 @@ class GlueAppStack(Stack):
         self.assets_bucket_name = config['infrastructure']['exports']['assetsBucket'].replace('dev', stage)
         self.glue_database_name = config['infrastructure']['exports']['glueDatabase'].replace('dev', stage)
         
-        # Import Glue job role from infrastructure stack
-        glue_job_role_name = f"DevInfraStage-Infrastructure-GlueJobRole{stage}*"
-        self.glue_job_role = iam.Role.from_role_name(
+        # Import Glue job role from infrastructure stack using ARN
+        # Use the exact role ARN from the infrastructure stack
+        glue_job_role_arn = f"arn:aws:iam::{config[f'{stage}Account']['awsAccountId']}:role/DevInfraStage-Infrastructure-GlueJobRoledev3BDDF23C-w4nsvNMzUqUo"
+        self.glue_job_role = iam.Role.from_role_arn(
             self, f"ImportedGlueJobRole-{stage}",
-            role_name=glue_job_role_name
+            role_arn=glue_job_role_arn
         )
         
         # Create Glue job for processing legislators data
