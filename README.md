@@ -2,6 +2,8 @@
 
 This repository contains the application layer for AWS Glue data processing pipelines.
 
+<!-- Test automatic triggering -->
+
 ## Architecture
 
 This repository is part of a dual-pipeline architecture:
