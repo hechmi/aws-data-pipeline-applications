@@ -98,9 +98,8 @@ class FileProcessor:
                             .withColumn("processing_job", lit(self.job_name))
         
         # Convert back to DynamicFrame
-        processed_dyf = self.context.create_dynamic_frame.from_dataframe(
-            df_with_metadata, self.context, "processed_data"
-        )
+        from awsglue.dynamicframe import DynamicFrame
+        processed_dyf = DynamicFrame.fromDF(df_with_metadata, self.context, "processed_data")
         
         # Generate output file name based on input file
         filename_without_ext = os.path.splitext(input_filename)[0]
