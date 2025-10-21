@@ -43,10 +43,7 @@ class GlueAppStack(Stack):
             role=self.glue_job_role,
             description=f"Generic file processor for {stage} environment - triggered by S3 uploads",
             default_arguments={
-                "--enable-metrics": "",
-                "--enable-continuous-cloudwatch-log": "",
-                "--job-language": "python",
-                "--enable-job-insights": "true"
+                "--job-language": "python"
             },
             max_concurrent_runs=5,  # Allow multiple files to be processed simultaneously
             timeout=Duration.hours(2)
