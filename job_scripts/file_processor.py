@@ -1,13 +1,13 @@
 import sys
 from pyspark.context import SparkContext
+from pyspark.sql import SparkSession
 from awsglue.context import GlueContext
 from awsglue.job import Job
 from awsglue.utils import getResolvedOptions
-from awsglue.transforms import *
-from pyspark.sql.functions import current_timestamp, input_file_name, lit
+from pyspark.sql.functions import current_timestamp, lit
 import os
 
-class FileProcessor:
+class CSVToIcebergProcessor:
     def __init__(self):
         # Get job parameters
         params = []
@@ -16,8 +16,18 @@ class FileProcessor:
         
         args = getResolvedOptions(sys.argv, params)
         
-        # Initialize Glue context
-        self.context = GlueContext(SparkContext.getOrCreate())
+        # Initialize Spark with Iceberg support
+        spark = SparkSession.builder \
+            .appName("CSV-to-Iceberg-Processor") \
+            .config("spark.sql.extensions", "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions") \
+            .config("spark.sql.catalog.glue_catalog", "org.apache.iceberg.spark.SparkCatalog") \
+            .config("spark.sql.catalog.glue_catalog.warehouse", "s3://glue-output-dev-095929019002/iceberg-warehouse/") \
+            .config("spark.sql.catalog.glue_catalog.catalog-impl", "org.apache.iceberg.aws.glue.GlueCatalog") \
+            .config("spark.sql.catalog.glue_catalog.io-impl", "org.apache.iceberg.aws.s3.S3FileIO") \
+            .getOrCreate()
+        
+        self.spark = spark
+        self.context = GlueContext(spark.sparkContext)
         self.job = Job(self.context)
         
         if 'JOB_NAME' in args:
@@ -28,98 +38,58 @@ class FileProcessor:
         else:
             # Default values for local testing
             self.job_name = "test"
-            self.input_path = "s3://test-bucket/input/sample.json"
+            self.input_path = "s3://test-bucket/input/sample.csv"
             self.output_path = "s3://test-bucket/output/"
             self.database_name = "test_database"
         
         self.job.init(self.job_name, args)
     
-    def detect_file_format(self, file_path):
-        """Detect file format based on extension"""
-        if file_path.lower().endswith('.json'):
-            return 'json'
-        elif file_path.lower().endswith('.csv'):
-            return 'csv'
-        elif file_path.lower().endswith('.parquet'):
-            return 'parquet'
-        else:
-            return 'json'  # Default to JSON
-    
     def run(self):
-        """Main job execution logic"""
-        print(f"Starting job: {self.job_name}")
-        print(f"Input path: {self.input_path}")
-        print(f"Output path: {self.output_path}")
-        print(f"Database: {self.database_name}")
+        """Convert CSV to Iceberg table"""
+        print(f"Starting CSV to Iceberg conversion: {self.job_name}")
+        print(f"Input CSV: {self.input_path}")
+        print(f"Output database: {self.database_name}")
         
-        # Detect file format
-        file_format = self.detect_file_format(self.input_path)
-        print(f"Detected file format: {file_format}")
+        # Read CSV file
+        df = self.spark.read \
+            .option("header", "true") \
+            .option("inferSchema", "true") \
+            .csv(self.input_path)
         
-        # Read input file based on format
-        if file_format == 'csv':
-            input_dyf = self.context.create_dynamic_frame.from_options(
-                connection_type="s3",
-                connection_options={
-                    "paths": [self.input_path]
-                },
-                format="csv",
-                format_options={
-                    "withHeader": True,
-                    "separator": ","
-                }
-            )
-        elif file_format == 'parquet':
-            input_dyf = self.context.create_dynamic_frame.from_options(
-                connection_type="s3",
-                connection_options={
-                    "paths": [self.input_path]
-                },
-                format="parquet"
-            )
-        else:  # JSON or default
-            input_dyf = self.context.create_dynamic_frame.from_options(
-                connection_type="s3",
-                connection_options={
-                    "paths": [self.input_path]
-                },
-                format="json"
-            )
-        
-        print(f"Read {input_dyf.count()} records from input file")
-        
-        # Convert to DataFrame for processing
-        df = input_dyf.toDF()
+        print(f"Read {df.count()} records from CSV file")
+        df.printSchema()
         
         # Add metadata columns
         input_filename = os.path.basename(self.input_path)
-        df_with_metadata = df.withColumn("processed_at", current_timestamp()) \
-                            .withColumn("source_file", lit(input_filename)) \
-                            .withColumn("processing_job", lit(self.job_name))
-        
-        # Convert back to DynamicFrame
-        from awsglue.dynamicframe import DynamicFrame
-        processed_dyf = DynamicFrame.fromDF(df_with_metadata, self.context, "processed_data")
-        
-        # Generate output file name based on input file
         filename_without_ext = os.path.splitext(input_filename)[0]
-        output_location = f"{self.output_path}{filename_without_ext}_processed/"
         
-        # Write to S3 in Parquet format (optimized for analytics)
-        self.context.write_dynamic_frame.from_options(
-            frame=processed_dyf,
-            connection_type="s3",
-            connection_options={
-                "path": output_location
-            },
-            format="parquet"
-        )
+        df_with_metadata = df \
+            .withColumn("processed_at", current_timestamp()) \
+            .withColumn("source_file", lit(input_filename)) \
+            .withColumn("processing_job", lit(self.job_name))
         
-        print(f"Successfully wrote {processed_dyf.count()} records to {output_location}")
+        # Create table name from filename
+        table_name = f"{filename_without_ext}_iceberg"
+        full_table_name = f"glue_catalog.{self.database_name}.{table_name}"
+        
+        print(f"Creating Iceberg table: {full_table_name}")
+        
+        # Write to Iceberg table
+        df_with_metadata.write \
+            .format("iceberg") \
+            .mode("overwrite") \
+            .option("path", f"s3://glue-output-dev-095929019002/iceberg-warehouse/{self.database_name}/{table_name}") \
+            .saveAsTable(full_table_name)
+        
+        print(f"Successfully created Iceberg table {full_table_name} with {df_with_metadata.count()} records")
+        
+        # Show sample data
+        print("Sample data:")
+        df_with_metadata.show(5)
         
         # Commit the job
         self.job.commit()
 
 if __name__ == '__main__':
-    processor = FileProcessor()
+    processor = CSVToIcebergProcessor()
     processor.run()

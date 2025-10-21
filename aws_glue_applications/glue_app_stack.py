@@ -30,7 +30,7 @@ class GlueAppStack(Stack):
             role_arn=glue_job_role_arn
         )
         
-        # Create generic file processor job (event-driven)
+        # Create CSV to Iceberg processor job (event-driven)
         self.file_processor_job = glue.Job(self, f"FileProcessor-{stage}",
             job_name=f"FileProcessor-{stage}",  # Explicit name for Lambda trigger
             executable=glue.JobExecutable.python_etl(
@@ -41,12 +41,16 @@ class GlueAppStack(Stack):
                 )
             ),
             role=self.glue_job_role,
-            description=f"Generic file processor for {stage} environment - triggered by S3 uploads",
+            description=f"CSV to Iceberg processor for {stage} environment - triggered by S3 uploads",
             default_arguments={
-                "--job-language": "python"
+                "--job-language": "python",
+                "--enable-metrics": "",
+                "--enable-continuous-cloudwatch-log": "",
+                "--extra-jars": "s3://aws-glue-assets-095929019002-us-west-2/iceberg/iceberg-spark-runtime-3.3_2.12-1.3.1.jar",
+                "--conf": "spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions --conf spark.sql.catalog.glue_catalog=org.apache.iceberg.spark.SparkCatalog --conf spark.sql.catalog.glue_catalog.catalog-impl=org.apache.iceberg.aws.glue.GlueCatalog --conf spark.sql.catalog.glue_catalog.io-impl=org.apache.iceberg.aws.s3.S3FileIO"
             },
-            max_concurrent_runs=5,  # Allow multiple files to be processed simultaneously
-            timeout=Duration.hours(2)
+            max_concurrent_runs=3,  # Allow multiple CSV files to be processed simultaneously
+            timeout=Duration.hours(1)
         )
         
         # Keep the original legislators job for backward compatibility
