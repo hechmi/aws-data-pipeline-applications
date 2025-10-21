@@ -31,8 +31,8 @@ class GlueAppStack(Stack):
         )
         
         # Create CSV to Parquet processor job (event-driven)
-        self.file_processor_job = glue.Job(self, f"FileProcessor-{stage}",
-            job_name=f"FileProcessor-{stage}",  # Explicit name for Lambda trigger
+        self.file_processor_job = glue.Job(self, f"FileProcessorV2-{stage}",
+            job_name=f"FileProcessorV2-{stage}",  # Explicit name for Lambda trigger
             executable=glue.JobExecutable.python_etl(
                 glue_version=glue.GlueVersion.V4_0,
                 python_version=glue.PythonVersion.THREE,
