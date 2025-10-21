@@ -1,13 +1,12 @@
 import sys
-from pyspark.context import SparkContext
-from pyspark.sql import SparkSession
 from awsglue.context import GlueContext
 from awsglue.job import Job
 from awsglue.utils import getResolvedOptions
+from pyspark.context import SparkContext
 from pyspark.sql.functions import current_timestamp, lit
 import os
 
-class CSVToIcebergProcessor:
+class CSVToParquetProcessor:
     def __init__(self):
         # Get job parameters
         params = []
@@ -16,18 +15,10 @@ class CSVToIcebergProcessor:
         
         args = getResolvedOptions(sys.argv, params)
         
-        # Initialize Spark with Iceberg support
-        spark = SparkSession.builder \
-            .appName("CSV-to-Iceberg-Processor") \
-            .config("spark.sql.extensions", "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions") \
-            .config("spark.sql.catalog.glue_catalog", "org.apache.iceberg.spark.SparkCatalog") \
-            .config("spark.sql.catalog.glue_catalog.warehouse", "s3://glue-output-dev-095929019002/iceberg-warehouse/") \
-            .config("spark.sql.catalog.glue_catalog.catalog-impl", "org.apache.iceberg.aws.glue.GlueCatalog") \
-            .config("spark.sql.catalog.glue_catalog.io-impl", "org.apache.iceberg.aws.s3.S3FileIO") \
-            .getOrCreate()
-        
-        self.spark = spark
-        self.context = GlueContext(spark.sparkContext)
+        # Initialize Glue context
+        sc = SparkContext()
+        self.context = GlueContext(sc)
+        self.spark = self.context.spark_session
         self.job = Job(self.context)
         
         if 'JOB_NAME' in args:
@@ -45,18 +36,19 @@ class CSVToIcebergProcessor:
         self.job.init(self.job_name, args)
     
     def run(self):
-        """Convert CSV to Iceberg table"""
-        print(f"Starting CSV to Iceberg conversion: {self.job_name}")
+        """Convert CSV to Parquet with metadata"""
+        print(f"Starting CSV to Parquet conversion: {self.job_name}")
         print(f"Input CSV: {self.input_path}")
-        print(f"Output database: {self.database_name}")
+        print(f"Output path: {self.output_path}")
         
-        # Read CSV file
+        # Read CSV file using Spark
         df = self.spark.read \
             .option("header", "true") \
             .option("inferSchema", "true") \
             .csv(self.input_path)
         
         print(f"Read {df.count()} records from CSV file")
+        print("Schema:")
         df.printSchema()
         
         # Add metadata columns
@@ -68,28 +60,25 @@ class CSVToIcebergProcessor:
             .withColumn("source_file", lit(input_filename)) \
             .withColumn("processing_job", lit(self.job_name))
         
-        # Create table name from filename
-        table_name = f"{filename_without_ext}_iceberg"
-        full_table_name = f"glue_catalog.{self.database_name}.{table_name}"
+        # Create output path
+        output_location = f"{self.output_path}{filename_without_ext}_processed/"
         
-        print(f"Creating Iceberg table: {full_table_name}")
+        print(f"Writing to: {output_location}")
         
-        # Write to Iceberg table
+        # Write to Parquet format
         df_with_metadata.write \
-            .format("iceberg") \
             .mode("overwrite") \
-            .option("path", f"s3://glue-output-dev-095929019002/iceberg-warehouse/{self.database_name}/{table_name}") \
-            .saveAsTable(full_table_name)
+            .parquet(output_location)
         
-        print(f"Successfully created Iceberg table {full_table_name} with {df_with_metadata.count()} records")
+        print(f"Successfully wrote {df_with_metadata.count()} records to {output_location}")
         
         # Show sample data
-        print("Sample data:")
-        df_with_metadata.show(5)
+        print("Sample processed data:")
+        df_with_metadata.show(5, truncate=False)
         
         # Commit the job
         self.job.commit()
 
 if __name__ == '__main__':
-    processor = CSVToIcebergProcessor()
+    processor = CSVToParquetProcessor()
     processor.run()
