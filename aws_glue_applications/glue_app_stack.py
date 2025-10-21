@@ -37,7 +37,7 @@ class GlueAppStack(Stack):
                 glue_version=glue.GlueVersion.V4_0,
                 python_version=glue.PythonVersion.THREE,
                 script=glue.Code.from_asset(
-                    path.join(path.dirname(__file__), "../job_scripts/file_processor.py")
+                    path.join(path.dirname(__file__), "../job_scripts/simple_test.py")
                 )
             ),
             role=self.glue_job_role,
