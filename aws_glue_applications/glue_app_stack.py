@@ -43,9 +43,7 @@ class GlueAppStack(Stack):
             role=self.glue_job_role,
             description=f"CSV to Parquet processor for {stage} environment - triggered by S3 uploads",
             default_arguments={
-                "--job-language": "python",
-                "--enable-metrics": "",
-                "--enable-continuous-cloudwatch-log": ""
+                "--job-language": "python"
             },
             max_concurrent_runs=3,  # Allow multiple CSV files to be processed simultaneously
             timeout=Duration.hours(1)
