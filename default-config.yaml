@@ -10,14 +10,6 @@ prodAccount:
   awsAccountId: 981445861826
   awsRegion: us-west-2
 
-# Infrastructure stack outputs to reference
-infrastructure:
-  stackName: "DevInfraStage-InfrastructureStack"
-  exports:
-    dataBucket: "glue-data-pipeline-dev-095929019002"
-    assetsBucket: "glue-assets-dev-095929019002"
-    glueDatabase: "glue_database_dev"
-
 # Application configuration
 applications:
   dev:
@@ -25,8 +17,14 @@ applications:
       ProcessLegislators:
         inputLocation: "s3://awsglue-datasets/examples/us-legislators/all"
         outputLocation: "s3://glue-data-pipeline-dev-095929019002/output/"
+      FileProcessor:
+        # Event-driven job - parameters passed by Lambda
+        description: "Processes files uploaded to input bucket automatically"
   prod:
     jobs:
       ProcessLegislators:
         inputLocation: "s3://awsglue-datasets/examples/us-legislators/all"
         outputLocation: "s3://glue-data-pipeline-prod-981445861826/output/"
+      FileProcessor:
+        # Event-driven job - parameters passed by Lambda
+        description: "Processes files uploaded to input bucket automatically"

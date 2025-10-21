@@ -3,6 +3,7 @@ from typing import Dict
 from aws_cdk import (
     Stack,
     Duration,
+    Fn,
     aws_glue_alpha as glue,
     aws_iam as iam
 )
@@ -16,24 +17,42 @@ class GlueAppStack(Stack):
         self.stage = stage
         self.config = config
         
-        # Import infrastructure resources
-        self.data_bucket_name = config['infrastructure']['exports']['dataBucket'].replace('dev', stage)
-        self.assets_bucket_name = config['infrastructure']['exports']['assetsBucket'].replace('dev', stage)
-        self.glue_database_name = config['infrastructure']['exports']['glueDatabase'].replace('dev', stage)
+        # Import infrastructure resources using CloudFormation exports
+        self.input_bucket_name = Fn.import_value(f"InputBucket-{stage}")
+        self.output_bucket_name = Fn.import_value(f"OutputBucket-{stage}")
+        self.assets_bucket_name = Fn.import_value(f"AssetsBucket-{stage}")
+        self.glue_database_name = Fn.import_value(f"GlueDatabase-{stage}")
         
-        # Import Glue job role from infrastructure stack using ARN
-        # Use environment-specific role ARN
-        if stage == "dev":
-            glue_job_role_arn = f"arn:aws:iam::{config[f'{stage}Account']['awsAccountId']}:role/DevInfraStage-Infrastructure-GlueJobRoledev3BDDF23C-w4nsvNMzUqUo"
-        else:  # prod
-            glue_job_role_arn = f"arn:aws:iam::{config[f'{stage}Account']['awsAccountId']}:role/ProdInfraStage-Infrastructu-GlueJobRoleprod8C99FE33-3ApfcykBh1Wf"
-        
+        # Import Glue job role from infrastructure stack
+        glue_job_role_arn = Fn.import_value(f"GlueJobRole-{stage}")
         self.glue_job_role = iam.Role.from_role_arn(
             self, f"ImportedGlueJobRole-{stage}",
             role_arn=glue_job_role_arn
         )
         
-        # Create Glue job for processing legislators data
+        # Create generic file processor job (event-driven)
+        self.file_processor_job = glue.Job(self, f"FileProcessor-{stage}",
+            job_name=f"FileProcessor-{stage}",  # Explicit name for Lambda trigger
+            executable=glue.JobExecutable.python_etl(
+                glue_version=glue.GlueVersion.V4_0,
+                python_version=glue.PythonVersion.THREE,
+                script=glue.Code.from_asset(
+                    path.join(path.dirname(__file__), "../job_scripts/file_processor.py")
+                )
+            ),
+            role=self.glue_job_role,
+            description=f"Generic file processor for {stage} environment - triggered by S3 uploads",
+            default_arguments={
+                "--enable-metrics": "",
+                "--enable-continuous-cloudwatch-log": "",
+                "--job-language": "python",
+                "--enable-job-insights": "true"
+            },
+            max_concurrent_runs=5,  # Allow multiple files to be processed simultaneously
+            timeout=Duration.hours(2)
+        )
+        
+        # Keep the original legislators job for backward compatibility
         self.process_legislators_job = glue.Job(self, f"ProcessLegislators-{stage}",
             executable=glue.JobExecutable.python_etl(
                 glue_version=glue.GlueVersion.V4_0,
