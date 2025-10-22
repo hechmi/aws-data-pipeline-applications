@@ -14,6 +14,7 @@ GITHUB_BRANCH = "main"
 GITHUB_CONNECTION_ARN = "arn:aws:codeconnections:us-west-2:009507777973:connection/bdfca5f3-e4eb-4f24-8da6-331be9739e3a"
 
 class AppPipelineStack(Stack):
+    # Testing automatic pipeline triggering
     def __init__(self, scope: Construct, construct_id: str, config: Dict, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
