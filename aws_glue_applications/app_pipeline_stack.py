@@ -21,8 +21,7 @@ class AppPipelineStack(Stack):
             GITHUB_REPO,
             GITHUB_BRANCH,
             connection_arn=GITHUB_CONNECTION_ARN,
-            trigger_on_push=True,
-            code_build_clone_output=True  # Force webhook recreation
+            trigger_on_push=True
         )
 
         pipeline = CodePipeline(self, "GlueAppPipeline",
