@@ -15,6 +15,7 @@ GITHUB_CONNECTION_ARN = "arn:aws:codeconnections:us-west-2:009507777973:connecti
 
 class AppPipelineStack(Stack):
     # Testing automatic pipeline triggering
+    # Second test for auto-trigger functionality
     def __init__(self, scope: Construct, construct_id: str, config: Dict, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
