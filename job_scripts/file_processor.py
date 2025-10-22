@@ -20,6 +20,7 @@ print(f"Input CSV: {args['input_path']}")
 print(f"Output path: {args['output_path']}")
 print("End-to-end pipeline test - Version 1.0")
 print("🔧 Pipeline Troubleshooting - Testing Auto-Trigger")
+print("✅ Auto-Trigger Test - Version 2.0")
 
 try:
     # Read CSV file using Spark
