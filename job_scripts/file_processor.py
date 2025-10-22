@@ -18,6 +18,7 @@ job.init(args['JOB_NAME'], args)
 print(f"Starting CSV to Parquet conversion: {args['JOB_NAME']}")
 print(f"Input CSV: {args['input_path']}")
 print(f"Output path: {args['output_path']}")
+print("End-to-end pipeline test - Version 1.0")
 
 try:
     # Read CSV file using Spark
