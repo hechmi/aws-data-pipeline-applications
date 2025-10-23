@@ -8,14 +8,16 @@ from constructs import Construct
 from aws_cdk.pipelines import CodePipeline, CodePipelineSource, CodeBuildStep, CodeBuildOptions, ManualApprovalStep
 from aws_glue_applications.glue_app_stage import GlueAppStage
 
-GITHUB_REPO = "hechmi/aws-data-pipeline-applications"
+# TODO: Replace these placeholders with your actual values
+GITHUB_REPO = "YOUR_GITHUB_USERNAME/YOUR_APPLICATION_REPO_NAME"
 GITHUB_BRANCH = "main"
 # Dedicated connection for application repository
-GITHUB_CONNECTION_ARN = "arn:aws:codeconnections:us-west-2:009507777973:connection/bdfca5f3-e4eb-4f24-8da6-331be9739e3a"
+GITHUB_CONNECTION_ARN = "arn:aws:codeconnections:YOUR_REGION:YOUR_PIPELINE_ACCOUNT:connection/YOUR_CONNECTION_ID"
 
 class AppPipelineStack(Stack):
     # Testing automatic pipeline triggering
     # Second test for auto-trigger functionality
+    # Third attempt - testing webhook trigger
     def __init__(self, scope: Construct, construct_id: str, config: Dict, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 

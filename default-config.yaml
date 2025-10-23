@@ -1,14 +1,15 @@
+# TODO: Replace these placeholder values with your actual AWS account IDs and region
 pipelineAccount:
-  awsAccountId: 009507777973
-  awsRegion: us-west-2
+  awsAccountId: YOUR_PIPELINE_ACCOUNT_ID
+  awsRegion: YOUR_PREFERRED_REGION
 
 devAccount:
-  awsAccountId: 095929019002
-  awsRegion: us-west-2
+  awsAccountId: YOUR_DEV_ACCOUNT_ID
+  awsRegion: YOUR_PREFERRED_REGION
 
 prodAccount:
-  awsAccountId: 981445861826
-  awsRegion: us-west-2
+  awsAccountId: YOUR_PROD_ACCOUNT_ID
+  awsRegion: YOUR_PREFERRED_REGION
 
 # Application configuration
 applications:
@@ -16,7 +17,7 @@ applications:
     jobs:
       ProcessLegislators:
         inputLocation: "s3://awsglue-datasets/examples/us-legislators/all"
-        outputLocation: "s3://glue-data-pipeline-dev-095929019002/output/"
+        outputLocation: "s3://glue-data-pipeline-dev-YOUR_DEV_ACCOUNT_ID/output/"
       FileProcessor:
         # Event-driven job - parameters passed by Lambda
         description: "Processes files uploaded to input bucket automatically"
@@ -24,7 +25,7 @@ applications:
     jobs:
       ProcessLegislators:
         inputLocation: "s3://awsglue-datasets/examples/us-legislators/all"
-        outputLocation: "s3://glue-data-pipeline-prod-981445861826/output/"
+        outputLocation: "s3://glue-data-pipeline-prod-YOUR_PROD_ACCOUNT_ID/output/"
       FileProcessor:
         # Event-driven job - parameters passed by Lambda
         description: "Processes files uploaded to input bucket automatically"
