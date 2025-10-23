@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+
+# Demo comment added for application pipeline demonstration - 2025-10-23
 import os
 import aws_cdk as cdk
 from aws_glue_applications.app_pipeline_stack import AppPipelineStack
